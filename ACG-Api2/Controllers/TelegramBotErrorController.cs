@@ -10,7 +10,6 @@ namespace ACG_Api2.Controllers
     public class TelegramBotErrorController : ControllerBase
     {
         private readonly TelegramBot _telegramBot;
-
         public TelegramBotErrorController(TelegramBot telegramBot)
         {
             _telegramBot = telegramBot;

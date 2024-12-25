@@ -3,6 +3,9 @@ using ACG_Class.Database;
 using Microsoft.EntityFrameworkCore;
 using ACG_Class.Model.Class;
 using ACG_Class.Model.ModelMemory.Class;
+using ACG_Api2.Middleware;
+using Telegram.Bot.Types;
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ACG_Api.Controllers.Accounting
@@ -21,10 +24,12 @@ namespace ACG_Api.Controllers.Accounting
     {
         private readonly DataBaseContext _context;
         private readonly MemoryDb _mcontext;
-        public SubleaseController(DataBaseContext context, MemoryDb mcontext)
+        private readonly TelegramBot _telegramBot;
+        public SubleaseController(DataBaseContext context, MemoryDb mcontext, TelegramBot telegramBot)
         {
             _context = context;
             _mcontext = mcontext;
+            _telegramBot = telegramBot;
         }
 
         [HttpGet("Dropdown")]
@@ -45,8 +50,15 @@ namespace ACG_Api.Controllers.Accounting
         [HttpGet]
         public async Task<ActionResult<IEnumerable<_4D>>> Get()
         {
-            var result = await _context.D4.ToListAsync();
-            return Ok(result);
+            try
+            {
+                var result = await _context.D4.ToListAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                await _telegramBot.SendErrorMessage(ex.Message);
+            }
         }
 
         // POST api/<SubleaseController>

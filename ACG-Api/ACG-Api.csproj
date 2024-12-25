@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ACG-Api2\ACG-Api2.csproj" />
     <ProjectReference Include="..\ACG-Class\ACG-Class.csproj" />
   </ItemGroup>
 
