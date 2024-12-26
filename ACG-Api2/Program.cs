@@ -1,5 +1,4 @@
 using ACG_Api2.Middleware;
-using ACG_Api2.Model.TelegramBotSettings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<TelegramBot>();
-builder.Services.Configure<Settings>(builder.Configuration.GetSection("TelegramBot"));
+builder.Services.Configure<TelegramBotSettings>(builder.Configuration.GetSection("TelegramBot"));
 
 var app = builder.Build();
 

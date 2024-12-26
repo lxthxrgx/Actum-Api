@@ -1,6 +1,7 @@
 ﻿using ACG_Api2.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot;
+using ACG_Class.Model.ServerError;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ACG_Api2.Controllers
@@ -35,21 +36,30 @@ namespace ACG_Api2.Controllers
         [HttpPost("Server")]
         public async Task<IActionResult> Server([FromBody] BodyError berror)
         {
-            berror.SetKievTime();
-            string message = $"⚠️ Server error ⚠️ \nName: {berror.Name} \nDate: {berror.Date} \nError message: {berror.Error}";
-            await _telegramBot.SendErrorMessage(message);
+            try
+            {
+                berror.SetKievTime();
+                await _telegramBot.SendErrorMessage($"✅ Test \nClass: {GetType().Name} \nName Method: {nameof(Server)} \nTime: {berror.Date} \nError message: Test Error");
+            }
+            catch(Exception ex) 
+            {
+                await _telegramBot.SendErrorMessage(ServerError.MessageFromServer(ex, GetType().Name, nameof(Server)));
+            }
             return Ok(new { success = true, message = "Error message sent successfully" });
         }
 
         [HttpPost("Client")]
         public async Task<IActionResult> Client([FromBody] BodyError berror)
         {
-            string message = $"❗ Client error ❗" +
-                             $"Name: {berror.Name}" +
-                             $"Date: {berror.Date}" +
-                             $"Error message: {berror.Error}";
-
-            await _telegramBot.SendErrorMessage(message);
+            try
+            {
+                berror.SetKievTime();
+                await _telegramBot.SendErrorMessage($"✅ Test \nClass: {GetType().Name} \nName Method: {nameof(Client)} \nTime: {berror.Date} \nError message: Test Error");
+            }
+            catch (Exception ex)
+            {
+                await _telegramBot.SendErrorMessage(ServerError.MessageFromClient(ex, GetType().Name, nameof(Client)));
+            }
             return Ok(new { success = true, message = "Error message sent successfully" });
         }
     }

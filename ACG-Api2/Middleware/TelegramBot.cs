@@ -3,7 +3,6 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using ACG_Api2.Model.TelegramBotSettings;
 using Microsoft.Extensions.Options;
 
 namespace ACG_Api2.Middleware
@@ -11,12 +10,14 @@ namespace ACG_Api2.Middleware
 
     public class TelegramBot
     {
-        private readonly Settings _settings;
+        private readonly TelegramBotSettings _settings;
         private TelegramBotClient _bot;
         private readonly long _chatId;
         private CancellationTokenSource? _cts;
 
-        public TelegramBot(IOptions<Settings> options)
+        public TelegramBot() { }
+
+        public TelegramBot(IOptions<TelegramBotSettings> options)
         {
             _settings = options.Value;
             _bot = new TelegramBotClient(_settings.TelegramBotApi);
@@ -28,10 +29,10 @@ namespace ACG_Api2.Middleware
             _cts = new CancellationTokenSource();
             _bot = new TelegramBotClient(_settings.TelegramBotApi);
             var me = await _bot.GetMe();
-            Console.WriteLine($"Bot @{me.Username} is running...");
             _bot.OnError += OnError;
             _bot.OnMessage += OnMessage;
             _bot.OnUpdate += OnUpdate;
+            Console.WriteLine($"Bot @{me.Username} is running...");
         }
 
         public async Task SendErrorMessage(string message)
@@ -81,4 +82,9 @@ namespace ACG_Api2.Middleware
         }
     }
 
+    public class TelegramBotSettings
+    {
+        public string TelegramBotApi { get; set; }
+        public long TelegramBotUser { get; set; }
+    }
 }

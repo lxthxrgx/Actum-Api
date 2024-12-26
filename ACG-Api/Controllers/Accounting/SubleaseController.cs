@@ -5,7 +5,7 @@ using ACG_Class.Model.Class;
 using ACG_Class.Model.ModelMemory.Class;
 using ACG_Api2.Middleware;
 using Telegram.Bot.Types;
-
+using ACG_Class.Model.ServerError;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ACG_Api.Controllers.Accounting
@@ -35,15 +35,23 @@ namespace ACG_Api.Controllers.Accounting
         [HttpGet("Dropdown")]
         public async Task<ActionResult<IEnumerable<DataForGroups>>> GetGroups()
         {
-            var dataFromD2 = await _context.D2.Distinct().ToListAsync();
-            var data = dataFromD2.Select(d => new DataForGroups
+            try
             {
-                Id = d.Id,
-                NumberGroup = d.NumberGroup,
-                NameGroup = d.NameGroup,
-                Address = d.address
-            }).ToList();
-            return Ok(data);
+                var dataFromD2 = await _context.D2.Distinct().ToListAsync();
+                var data = dataFromD2.Select(d => new DataForGroups
+                {
+                    Id = d.Id,
+                    NumberGroup = d.NumberGroup,
+                    NameGroup = d.NameGroup,
+                    Address = d.address
+                }).ToList();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                //ServerError.MessageFromServer(ex, GetType().Name, nameof(GetGroups));
+                return StatusCode(500, new { server_error = $"Error: {ex.Message}" });
+            }
         }
 
         // GET: api/<SubleaseController>
@@ -57,7 +65,8 @@ namespace ACG_Api.Controllers.Accounting
             }
             catch (Exception ex)
             {
-                await _telegramBot.SendErrorMessage(ex.Message);
+                //ServerError.MessageFromServer(ex, GetType().Name, nameof(Get));
+                return StatusCode(500, new { server_error = $"Error: {ex.Message}"});
             }
         }
 
@@ -111,6 +120,7 @@ namespace ACG_Api.Controllers.Accounting
             }
             catch (Exception ex)
             {
+                //ServerError.MessageFromServer(ex, GetType().Name, nameof(Post));
                 return StatusCode(500, new { server_error = $"Error: {ex.Message}" });
             }
         }
@@ -119,13 +129,13 @@ namespace ACG_Api.Controllers.Accounting
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] _4D value)
         {
-            if(value == null)
-            {
-                return StatusCode(400, new { null_value = "No data to update" });
-            }
-
             try
             {
+                if (value == null)
+                {
+                    return StatusCode(400, new { null_value = "No data to update" });
+                }
+
                 var a = new _4D
                 {
                    NumberGroup = value.NumberGroup,
@@ -142,6 +152,7 @@ namespace ACG_Api.Controllers.Accounting
             }
             catch (Exception ex)
             {
+                //ServerError.MessageFromServer(ex, GetType().Name, nameof(Put));
                 return StatusCode(500, new { server_error = $"Error: {ex.Message}" });
             }
             return StatusCode(500, new {eternal_server_error = "Error" });
@@ -151,6 +162,7 @@ namespace ACG_Api.Controllers.Accounting
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
         }
     }
 }

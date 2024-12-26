@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ACG_Class.Database;
+using ACG_Api2.Middleware;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +45,9 @@ builder.Services.AddDbContext<MemoryDb>(options =>
         .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
         .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
 });
+
+builder.Services.Configure<TelegramBotSettings>(builder.Configuration.GetSection("TelegramBot"));
+builder.Services.AddSingleton<TelegramBot>();
 
 //CORS
 builder.Services.AddCors(options =>
