@@ -3,7 +3,6 @@ using ACG_Class.Database;
 using Microsoft.EntityFrameworkCore;
 using ACG_Class.Model.Class;
 using ACG_Class.Model.ModelMemory.Class;
-using ACG_Api2.Middleware;
 using Telegram.Bot.Types;
 using ACG_Class.Model.ServerError;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,12 +23,10 @@ namespace ACG_Api.Controllers.Accounting
     {
         private readonly DataBaseContext _context;
         private readonly MemoryDb _mcontext;
-        private readonly TelegramBot _telegramBot;
-        public SubleaseController(DataBaseContext context, MemoryDb mcontext, TelegramBot telegramBot)
+        public SubleaseController(DataBaseContext context, MemoryDb mcontext)
         {
             _context = context;
             _mcontext = mcontext;
-            _telegramBot = telegramBot;
         }
 
         [HttpGet("Dropdown")]

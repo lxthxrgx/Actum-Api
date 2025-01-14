@@ -31,10 +31,10 @@ namespace ACG_Api2.Controllers
             }
 
         }
-
+        // TEST CONTROLLERS START
         // GET: api/<TBErrorController>
-        [HttpPost("Server")]
-        public async Task<IActionResult> Server([FromBody] BodyError berror)
+        [HttpPost("ServerTest")]
+        public async Task<IActionResult> ServertTest([FromBody] BodyError berror)
         {
             try
             {
@@ -48,8 +48,8 @@ namespace ACG_Api2.Controllers
             return Ok(new { success = true, message = "Error message sent successfully" });
         }
 
-        [HttpPost("Client")]
-        public async Task<IActionResult> Client([FromBody] BodyError berror)
+        [HttpPost("ClientTest")]
+        public async Task<IActionResult> ClientTest([FromBody] BodyError berror)
         {
             try
             {
@@ -62,5 +62,40 @@ namespace ACG_Api2.Controllers
             }
             return Ok(new { success = true, message = "Error message sent successfully" });
         }
+        // TEST CONTROLLERS END
+
+        //CONTROLLERS FOR PROD START
+
+        [HttpPost("Server")]
+        public async Task<IActionResult> Server([FromBody] BodyError berror)
+        {
+            try
+            {
+                berror.SetKievTime();
+                await _telegramBot.SendErrorMessage($"❗SERVER ERROR \nClass: {GetType().Name} \nName Method: {nameof(Server)} \nTime: {berror.Date} \nError message: {berror.Error}");
+            }
+            catch (Exception ex)
+            {
+                await _telegramBot.SendErrorMessage(ServerError.MessageFromServer(ex, GetType().Name, nameof(Server)));
+            }
+            return Ok(new { success = true, message = "Error message sent successfully" });
+        }
+
+        [HttpPost("Client")]
+        public async Task<IActionResult> Client([FromBody] BodyError berror)
+        {
+            try
+            {
+                berror.SetKievTime();
+                await _telegramBot.SendErrorMessage($"⚠️ CLIENT ERROR \nClass: {GetType().Name} \nName Method: {nameof(Client)} \nTime: {berror.Date} \nError message: {berror.Error}");
+            }
+            catch (Exception ex)
+            {
+                await _telegramBot.SendErrorMessage(ServerError.MessageFromClient(ex, GetType().Name, nameof(Client)));
+            }
+            return Ok(new { success = true, message = "Error message sent successfully" });
+        }
+
+        //CONTROLLERS FOR PROD END
     }
 }
