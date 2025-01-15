@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\MemoryDb\**" />
+    <Content Remove="Controllers\MemoryDb\**" />
+    <EmbeddedResource Remove="Controllers\MemoryDb\**" />
+    <None Remove="Controllers\MemoryDb\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -23,10 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ACG-Class\ACG-Class.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\MemoryDb\" />
   </ItemGroup>
 
 </Project>
