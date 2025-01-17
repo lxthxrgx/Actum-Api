@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using ACG_Class.Model.Word.AdditionalCode;
 using ACG_Class.Model.Class;
-using WordGeneration;
 
 namespace ACG_Class.Model.Word
 {
