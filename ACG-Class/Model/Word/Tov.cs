@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using ACG_Class.Model.Word.AdditionalCode;
 using ACG_Class.Model.Class;
+using System.IO;
+using System;
 
 namespace ACG_Class.Model.Word
 {
@@ -14,13 +16,16 @@ namespace ACG_Class.Model.Word
         string Address { get; set; }
         string Director { get; set; }
         string ShortDirector { get; set; }
+
+        string GetDataCounterpartyTov();
     }
 
     interface IGroupsTov
     { 
-        double Area { get; set; }
+        double? Area { get; set; }
         string NameGroup { get; set; }
         string DepartmentAddress { get; set; }
+        string GetDataGroupsTov();
     }
 
     interface ISubleaseTov
@@ -31,55 +36,60 @@ namespace ACG_Class.Model.Word
         DateTime DateTime { get; set; }
         string AgreementContract { get; set; }
         double Sum { get; set; }
+        string GetDataSubleaseTov();
     }
 
-    public class Tov : BasicEntity
+    interface ISubleaseDop
     {
+        string SubleaseDopNum { get; set; }
+        DateTime? subleaseDopDate { get; set; }
+        string subleaseDopName { get; set; }
+        string subleaseDopRnokppLastData { get; set; }
+        string subleaseDopstatus { get; set; }
+        string GetDataSubleaseDopTov();
+    }
+
+    public class Tov : BasicEntity, IGroupsTov, ISubleaseTov,ICounterpartyTov, ISubleaseDop
+    {
+        public int Id { get; set; }
         private readonly DataBaseContext _context;
-        public Tov(int id)
+        public Tov(int id, DataBaseContext context)
         {
             Id = id;
-        }
-        public Tov(DataBaseContext context)
-        {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-
-        public int Id { get; set; }
-        public string AgreementNumber { get; set; }
-        public DateTime Datetime { get; set; }
         public string FullName { get; set; }
-        public string Edryofop { get; set; }
         public string Rnokpp { get; set; }
-        public string CounterpaertyAddress { get; set; }
+        public string Edryofop { get; set; }
         public string BanckAccount { get; set; }
-        public double? DepartmentArea { get; set; }
+        public string Address { get; set; }
+        public string Director { get; set; }
+        public string ShortDirector { get; set; }
+
+        public double? Area { get; set; }
+        public string NameGroup { get; set; }
         public string DepartmentAddress { get; set; }
+
+        public int NumberGroup { get; set; }
+        public DateTime AktDate { get; set; }
         public DateTime EndAktDate { get; set; }
+        public DateTime DateTime { get; set; }
+        public string AgreementContract { get; set; }
+        public double Sum { get; set; }
 
-        public string _director;
-        public string _shortDirector;
+        public string SubleaseDopNum { get; set; }
+        public DateTime? subleaseDopDate { get; set; }
+        public string subleaseDopName { get; set; }
+        public string subleaseDopRnokppLastData { get; set; }
+        public string subleaseDopstatus { get; set; }
 
-        public int? SubleaseDopId { get; set; }
-        public SubleaseDop? SubleaseDop { get; set; }
-
-        public string SubleaseDopNum;
-        public DateTime? subleaseDopDate;
-        public string subleaseDopName;
-        public string subleaseDopRnokppLastData;
-        public string subleaseDopstatus;
-
-        //const string dirPath = CreateDirectoryForDoc($"{NumberGroup}-{NameGroup}");
-        //const string path_dog = await wordDoc.CopyOriginalFile(LoadSettingSublease("sublease-agreement-tov", "sublease-tov"), $"{RenameGog(DogovirSuborendu)}-{relatedDataNameGroup}-договір-ТОВ", dirPath);
-
-
-        public int GetNumberGroupById()
+        public override int GetNumberGroup()
         {
             var GetNumberGroup = _context.D4.Where(x => x.Id == Id).Select(e => e.NumberGroup).SingleOrDefault();
             if (GetNumberGroup != 0)
             {
                 NumberGroup = GetNumberGroup;
-                return GetNumberGroup;
+                return NumberGroup;
             }
             else
             {
@@ -87,15 +97,15 @@ namespace ACG_Class.Model.Word
             }
         }
 
-        public string GetNameGroupByNameberGroup()
+        public override string GetNameGroup()
         {
-            var GetNameGroup =  _context.D2.Where(e => e.NumberGroup == GetNumberGroupById())
+            var GetNameGroup =  _context.D2.Where(e => e.NumberGroup == GetNumberGroup())
                 .Select(x => x.NameGroup).SingleOrDefault();
 
             if (!string.IsNullOrEmpty(GetNameGroup))
             {
                 NameGroup = GetNameGroup;
-                return GetNameGroup;
+                return NameGroup;
             }
             else
             {
@@ -103,154 +113,151 @@ namespace ACG_Class.Model.Word
             }
         }
 
-        public string Director()
+        public string GetDataCounterpartyTov()
         {
-            var GetDirectorFullName = _context.D1.Where(p => p.NameGroup == NameGroup)
-                .Select(x => x.Director)
+            var counterpartyData = _context.D1
+            .Where(p => p.NameGroup == NameGroup)
+            .Select(p => new
+            {
+                p.Fullname,
+                p.rnokpp,
+                p.edryofop_Data,
+                p.BanckAccount,
+                p.address,
+                p.Director
+            })
+            .FirstOrDefault();
+
+            if (counterpartyData == null)
+                return "Counterparty data not found.";
+
+            FullName = counterpartyData.Fullname;
+            Rnokpp = counterpartyData.rnokpp;
+            Edryofop = counterpartyData.edryofop_Data;
+            BanckAccount = counterpartyData.BanckAccount;
+            Address = counterpartyData.address;
+            Director = counterpartyData.Director;
+            ShortDirector = ShortName.GetShortenedName(Director);
+
+            if (FullName == null || Rnokpp == null || Edryofop == null || BanckAccount == null 
+               || Address == null || Director == null || ShortDirector == null )
+            {
+                return $"FullName: {FullName}, Rnokpp: {Rnokpp}, Edryofop: {Edryofop}, BanckAccount: {BanckAccount}" +
+                       $", Address: {Address}, Director: {Director}, ShortDirector: {ShortDirector}";
+            }
+
+            return "Data retrieved successfully.";
+        }
+
+        public string GetDataGroupsTov()
+        {
+            var GroupData = _context.D2.Where(x=>x.NumberGroup == NumberGroup)
+                .Select(a => new
+                {
+                    a.area,
+                    a.address
+                })
                 .FirstOrDefault();
 
-            if (!string.IsNullOrEmpty(GetDirectorFullName))
+            if (GroupData == null)
             {
-                _director = GetDirectorFullName;
-                return GetDirectorFullName;
-            }
-            else
-            {
-                return string.Empty;
+                return "GroupData data not found.";
             }
 
-        }
+            Area = GroupData.area;
+            DepartmentAddress = GroupData.address;
 
-        public string ShortDirector()
-        {
-            if (!string.IsNullOrEmpty(Director()))
+            if(Area == 0 || string.IsNullOrEmpty(DepartmentAddress))
             {
-                _shortDirector = ShortName.GetShortenedName(Director());
-                return ShortName.GetShortenedName(Director());
+                return $"Area: {Area}, Department Address: {DepartmentAddress}";
             }
-            else
+
+            return "Data retrieved successfully.";
+        }
+
+        public string GetDataSubleaseTov()
+        {
+            var DataSublease = _context.D4.Where(e => e.Id == Id)
+                .Select(d => new { d.AktDate, d.EndAktDate, d.DateTime, d.DogovirSuborendu, d.Suma }).FirstOrDefault();
+
+            if (DataSublease == null)
             {
-                return string.Empty;
+                return "DataSublease data not found.";
             }
+
+            AktDate = DataSublease.AktDate;
+            EndAktDate = DataSublease.EndAktDate;
+            DateTime = DataSublease.DateTime;
+            AgreementContract = DataSublease.DogovirSuborendu;
+            Sum = Convert.ToDouble(DataSublease.Suma);
+
+            if(AktDate == null || EndAktDate == null || DateTime == null || string.IsNullOrEmpty(AgreementContract) || Sum == 0) 
+            {
+                return $"AktDate: {AktDate}, EndAktDate: {EndAktDate},DateTime: {DateTime},AgreementContract: {AgreementContract},Sum: {Sum},";
+            }
+
+            return "Data retrieved successfully.";
         }
 
-        public string AreaToText(double Number)
+        public string GetDataSubleaseDopTov()
         {
-            return Num_To_Text.NumberToText(Convert.ToDouble(Number));
-        }
-        public string SumToText(double Sum)
-        {
-            return Num_To_Text.SumToText(Convert.ToDouble(Sum));
-        }
+            var SubleaseDopData = _context.D2.Where(e => e.NumberGroup == NumberGroup)
+                .Select(d => new {
+                    d.SubleaseDop.Num,
+                    d.SubleaseDop.Date,
+                    d.SubleaseDop.Name,
+                    d.SubleaseDop.rnokpp,
+                    d.SubleaseDop.status,
+                }).FirstOrDefault();
 
-        public async void GetData()
-        {
-            AgreementNumber = _context.D4
-                .Where(e => e.Id == Id)
-                .Select(x => x.DogovirSuborendu)
-                .SingleOrDefault();
+            if (SubleaseDopData == null)
+            {
+                return "SubleaseDopData data not found.";
+            }
 
-            Datetime = _context.D4
-                .Where(e => e.Id == Id)
-                .Select(x => x.DateTime)
-                .SingleOrDefault();
+            SubleaseDopNum = SubleaseDopData.Num;
+            subleaseDopDate = SubleaseDopData.Date;
+            subleaseDopName = SubleaseDopData.Name;
+            subleaseDopRnokppLastData = SubleaseDopData.rnokpp;
+            subleaseDopstatus = SubleaseDopData.status;
 
-            FullName = await _context.D1
-            .Where(p => p.NameGroup == NameGroup)
-            .Select(x => x.Fullname)
-            .FirstOrDefaultAsync();
+            if(string.IsNullOrEmpty(SubleaseDopNum) || subleaseDopDate == null || string.IsNullOrEmpty(subleaseDopName)
+            || string.IsNullOrEmpty(subleaseDopRnokppLastData) || string.IsNullOrEmpty(subleaseDopstatus))
+            {
+                return $"SubleaseDopNum: {SubleaseDopNum}, subleaseDopDate: {subleaseDopDate},subleaseDopName: {subleaseDopName}," +
+                       $"subleaseDopRnokppLastData: {subleaseDopRnokppLastData},subleaseDopstatus: {subleaseDopstatus},";
+            }
 
-            Edryofop = await _context.D1
-            .Where(p => p.NameGroup == GetNameGroupByNameberGroup())
-            .Select(x => x.edryofop_Data)
-            .FirstOrDefaultAsync();
-
-            Rnokpp = await _context.D1
-            .Where(p => p.NameGroup == GetNameGroupByNameberGroup())
-            .Select(x => x.rnokpp)
-            .FirstOrDefaultAsync();
-
-            CounterpaertyAddress = await _context.D1
-            .Where(p => p.NameGroup == NameGroup)
-            .Select(x => x.address)
-            .FirstOrDefaultAsync();
-
-            BanckAccount = await _context.D1
-            .Where(p => p.NameGroup == NameGroup)
-            .Select(x => x.BanckAccount)
-            .FirstOrDefaultAsync();
-
-            DepartmentArea = await _context.D2
-            .Where(p => p.NumberGroup == GetNumberGroupById())
-            .Select(x => x.area)
-            .FirstOrDefaultAsync();
-
-            DepartmentAddress = await _context.D4
-            .Where(p => p.NumberGroup == GetNumberGroupById())
-            .Select(x => x.address)
-            .FirstOrDefaultAsync();
-
-            EndAktDate = await _context.D4
-            .Where(p => p.NumberGroup == GetNumberGroupById())
-            .Select(x => x.EndAktDate)
-            .FirstOrDefaultAsync();
-
-            _director = Director();
-
-            _shortDirector = ShortDirector();
-
-            SubleaseDopNum = await _context.D2
-            .Where(p => p.NumberGroup == GetNumberGroupById())
-            .Select(p => p.SubleaseDop.Num)
-            .FirstOrDefaultAsync();
-
-            subleaseDopDate = await _context.D2
-                .Where(p => p.NumberGroup == GetNumberGroupById())
-                .Select(p => p.SubleaseDop.Date)
-            .FirstOrDefaultAsync();
-
-            subleaseDopName = await _context.D2
-            .Where(p => p.NumberGroup == GetNumberGroupById())
-            .Select(p => p.SubleaseDop.Name)
-            .FirstOrDefaultAsync();
-
-            subleaseDopRnokppLastData = await _context.D2
-            .Where(p => p.NumberGroup == GetNumberGroupById())
-            .Select(p => p.SubleaseDop.rnokpp)
-            .FirstOrDefaultAsync();
-
-            subleaseDopstatus = await _context.D2
-            .Where(p => p.NumberGroup == GetNumberGroupById())
-             .Select(p => p.SubleaseDop.status)
-            .FirstOrDefaultAsync();
+            return "Data retrieved successfully.";
         }
 
-        public void GenerateWord()
+        public virtual void PrintData()
         {
-            //var b = WordHelper.AddTextToContentControl(path_dog,
-            //               DogovirSuborendu,
-            //               DateTime.ToString("dd/MM/yyyy"),
-            //               relatedDataFullname,
-            //               relatedDataedryofop_Data,
-            //               relatedDataList.ToString(),
-            //               relatedDataarea.ToString(),
-            //               address,
-            //               EndAktDate.ToString("dd/MM/yyyy"),
-            //               relatedDataaddress,
-            //               null,
-            //               relatedDataBanckAccount,
-            //               relatedDataPIBS,
-            //               Num_To_Text.NumberToText(Convert.ToDouble(relatedDataarea)),
-            //               Num_To_Text.SumToText(Convert.ToDouble(Suma)),
-            //               Doublezero(Convert.ToDouble(Suma)),
-            //               null,
-            //               Director,
-            //               PIBSDirector,
-            //               subleaseDopNum ?? "____",
-            //               subleaseDopDate?.ToString("dd/MM/yyyy") ?? "____",
-            //               subleaseDopName ?? "____",
-            //               subleaseDopRnokppLastData ?? "____",
-            //               subleaseDopstatus ?? "____");
+            Console.WriteLine(FullName);
+            Console.WriteLine(Rnokpp);
+            Console.WriteLine(Edryofop);
+            Console.WriteLine(BanckAccount);
+            Console.WriteLine(Address);
+            Console.WriteLine(Director);
+            Console.WriteLine(ShortDirector);
+            Console.WriteLine(Area);
+            Console.WriteLine(NameGroup);
+            Console.WriteLine(DepartmentAddress);
+            Console.WriteLine(NumberGroup);
+            Console.WriteLine(AktDate);
+            Console.WriteLine(EndAktDate);
+            Console.WriteLine(DateTime);
+            Console.WriteLine(AgreementContract);
+            Console.WriteLine(Sum);
+            Console.WriteLine(SubleaseDopNum);
+            Console.WriteLine(subleaseDopDate);
+            Console.WriteLine(subleaseDopName);
+            Console.WriteLine(subleaseDopRnokppLastData);
+            Console.WriteLine(subleaseDopstatus);
+        }
+        public override void GenerateWordDocument()
+        {
+            
         }
     }
 }
