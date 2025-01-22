@@ -13,25 +13,32 @@ namespace ACG_NUnitTest
         public void Setup()
         {
             var options = new DbContextOptionsBuilder<DataBaseContext>()
-                .UseSqlite("Data Source=C:\\ACG\\DataBase\\Prod.db")
+                .UseSqlite("Data Source=C:\\ACG\\DataBase\\Test.db")
                 .Options;
 
             _context = new DataBaseContext(options);
-            _tov = new Tov(241, _context);
+            _tov = new Tov(4, _context);
         }
 
         [Test]
         public void TestGetNumberById()
         {
             var result = _tov.GetNumberGroup();
-            Assert.That(result, Is.EqualTo(12));
+            Assert.That(result, Is.EqualTo(7));
         }
 
         [Test]
         public void TestGetNameById()
         {
             var result = _tov.GetNameGroup();
-            Assert.That(result, Is.EqualTo("Юзик"));
+            Assert.That(result, Is.EqualTo("Микитюк"));
+        }
+
+        [Test]
+        public void GetDataCounterpartyTovByNameGroup()
+        {
+            var result = _tov.GetDataCounterpartyTov();
+            Assert.That(result, Is.EqualTo("Data retrieved successfully."));
         }
 
         [TearDown]

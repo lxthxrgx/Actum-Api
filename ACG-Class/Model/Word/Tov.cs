@@ -57,6 +57,8 @@ namespace ACG_Class.Model.Word
         {
             Id = id;
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            GetNumberGroup();
+            GetNameGroup();
         }
         public string FullName { get; set; }
         public string Rnokpp { get; set; }
@@ -93,14 +95,21 @@ namespace ACG_Class.Model.Word
             }
             else
             {
-                return 0;
+                return GetNumberGroup;
             }
         }
 
         public override string GetNameGroup()
         {
-            var GetNameGroup =  _context.D2.Where(e => e.NumberGroup == GetNumberGroup())
-                .Select(x => x.NameGroup).SingleOrDefault();
+            if (NumberGroup == 0)
+            {
+                return "Invalid NumberGroup";
+            }
+
+            var GetNameGroup = _context.D2
+           .Where(e => e.NumberGroup == NumberGroup)
+           .Select(x => x.NameGroup)
+           .FirstOrDefault();
 
             if (!string.IsNullOrEmpty(GetNameGroup))
             {
@@ -109,7 +118,7 @@ namespace ACG_Class.Model.Word
             }
             else
             {
-                return string.Empty;
+                return "No NameGroup found.";
             }
         }
 
