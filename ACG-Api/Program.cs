@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ACG_Class.Database;
+using Microsoft.Extensions.FileProviders;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -45,6 +46,16 @@ builder.Services.AddDbContext<MemoryDb>(options =>
         .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
 });
 
+//TASKMANAGER CONECCTION TO DATABASE
+//builder.Services.AddDbContext<TaskManager>(options =>
+//{
+//    options.UseSqlite(builder.Configuration.GetConnectionString("TaskManagerConnection"));
+//    options.EnableSensitiveDataLogging(false);
+//    options.UseLoggerFactory(LoggerFactory.Create(builder => builder
+//        .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
+//        .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
+//});
+
 //CORS
 builder.Services.AddCors(options =>
 {
@@ -52,6 +63,8 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           policy.WithOrigins("http://localhost:3000");
+                          policy.WithOrigins("http://localhost:5175");
+                      
                       });
 });
 
@@ -63,6 +76,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+//PATH TO PDF FILES
+app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(@"C:\Users\ltx.UFB\Desktop\PDF"),
+    RequestPath = "/pdf",
+});
 
 app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);

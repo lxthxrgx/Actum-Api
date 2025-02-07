@@ -59,6 +59,10 @@ namespace ACG_Class.Model.Word
             _context = context ?? throw new ArgumentNullException(nameof(context));
             GetNumberGroup();
             GetNameGroup();
+            GetDataCounterpartyTov();
+            //GetDataGroupsTov();
+            //GetDataSubleaseTov();
+            //GetDataSubleaseDopTov();
         }
         public string FullName { get; set; }
         public string Rnokpp { get; set; }
@@ -240,30 +244,6 @@ namespace ACG_Class.Model.Word
             return "Data retrieved successfully.";
         }
 
-        public virtual void PrintData()
-        {
-            Console.WriteLine(FullName);
-            Console.WriteLine(Rnokpp);
-            Console.WriteLine(Edryofop);
-            Console.WriteLine(BanckAccount);
-            Console.WriteLine(Address);
-            Console.WriteLine(Director);
-            Console.WriteLine(ShortDirector);
-            Console.WriteLine(Area);
-            Console.WriteLine(NameGroup);
-            Console.WriteLine(DepartmentAddress);
-            Console.WriteLine(NumberGroup);
-            Console.WriteLine(AktDate);
-            Console.WriteLine(EndAktDate);
-            Console.WriteLine(DateTime);
-            Console.WriteLine(AgreementContract);
-            Console.WriteLine(Sum);
-            Console.WriteLine(SubleaseDopNum);
-            Console.WriteLine(subleaseDopDate);
-            Console.WriteLine(subleaseDopName);
-            Console.WriteLine(subleaseDopRnokppLastData);
-            Console.WriteLine(subleaseDopstatus);
-        }
         public override void GenerateWordDocument()
         {
             
