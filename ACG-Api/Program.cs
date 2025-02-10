@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using ACG_Class.Database;
 using Microsoft.Extensions.FileProviders;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -57,17 +59,48 @@ builder.Services.AddDbContext<MemoryDb>(options =>
 //});
 
 //CORS
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy(name: MyAllowSpecificOrigins,
+//                      policy =>
+//                      {
+//                          policy.WithOrigins("http://localhost:3000", "http://localhost:5175")
+//                                .AllowAnyMethod()
+//                                .AllowAnyHeader();
+//                      });
+//});
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.WithOrigins("http://localhost:3000");
-                          policy.WithOrigins("http://localhost:5175");
-                      
-                      });
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
 });
 
+// CERTIFICATE HTTPS & HTTP SETTINGS
+var certificatePath = builder.Configuration["CertificatePath"];
+var certificatePassword = builder.Configuration["CertificatePassword"];
+var cert = new X509Certificate2(certificatePath, certificatePassword, X509KeyStorageFlags.MachineKeySet);
+
+var httpsIP = IPAddress.Parse(builder.Configuration["HttpsIP"] ?? "0.0.0.0");
+var staticIP = IPAddress.Parse(builder.Configuration["StaticIP"] ?? "0.0.0.0");
+var staticPortHttps = int.Parse(builder.Configuration["StaticPortHttps"] ?? "5001");
+var staticPortHttp = int.Parse(builder.Configuration["StaticPortHttp"] ?? "8080");
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Listen(httpsIP, staticPortHttps, listenOptions =>
+    {
+        listenOptions.UseHttps(cert);
+    });
+
+    options.Listen(staticIP, staticPortHttp);
+});
+
+var staticFilesPath = builder.Configuration["StaticFilesPath"];
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -83,12 +116,13 @@ app.UseStaticFiles();
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(@"C:\Users\ltx.UFB\Desktop\PDF"),
+    FileProvider = new PhysicalFileProvider(staticFilesPath),
     RequestPath = "/pdf",
 });
 
 app.UseHttpsRedirection();
-app.UseCors(MyAllowSpecificOrigins);
+//app.UseCors(MyAllowSpecificOrigins);
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();

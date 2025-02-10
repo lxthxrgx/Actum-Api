@@ -50,8 +50,8 @@ namespace ACG_Api.Controllers.pdfview
         [HttpGet]
         public async Task<IActionResult> GetDataForView()
         {
-            var data = await _context.D4
-                   .Select(x => new { x.Id, x.NumberGroup, x.NameGroup ,x.EndAktDate})
+            var data = await _context.D5
+                   .Select(x => new { x.Id, x.NumberGroup, x.NameGroup})
                    .ToListAsync();
 
             var pdfDataList = new List<PdfData>();
@@ -64,7 +64,6 @@ namespace ACG_Api.Controllers.pdfview
                     Id = item.Id,
                     NumberGroup = item.NumberGroup,
                     NameGroup = item.NameGroup,
-                    Status = item.EndAktDate < DateTime.Now ? "old" : "actual",
                 };
                 pdfDataList.Add(pdfData);
             }
@@ -74,9 +73,9 @@ namespace ACG_Api.Controllers.pdfview
         [HttpGet("getpdflink")]
         public IActionResult GetPdfLink(int id)
         {
-            var data = _context.PdfFilePath_Sublease
-                        .Where(s => s._4DId == id)
-                        .Select(x => x.PathToPdfFile_Sublease)
+            var data = _context.pathToFilesGuard
+                        .Where(s => s._5dId == id)
+                        .Select(x => x.PathTOServerFiles)
                         .ToList();
             if (data == null)
             {
@@ -87,9 +86,9 @@ namespace ACG_Api.Controllers.pdfview
 
             foreach(var itemdata in data)
             {
-                var normalizedPath = ChangePath.Change(itemdata);
-                var dataForUrl = _context.D4.Where(s => s.Id == id).Select(x => new { x.NumberGroup, x.NameGroup }).FirstOrDefault();
-                var path = $"{dataForUrl.NumberGroup}-{dataForUrl.NameGroup}/PDF Суборенда/{Path.GetFileName(itemdata)}";
+                var normalizedPath = ChangePath.Change(itemdata).Trim();
+                var dataForUrl = _context.D5.Where(s => s.Id == id).Select(x => new { x.NumberGroup, x.NameGroup }).FirstOrDefault();
+                var path = $"{dataForUrl.NumberGroup}-{dataForUrl.NameGroup}/Охорона/{Path.GetFileName(itemdata)}";
 
                 var fileName = Path.GetFileName(normalizedPath);
                 string fileUrl = $"{Request.Scheme}://{Request.Host}/pdf/{path}";

@@ -3,7 +3,6 @@ using ACG_Class.Database;
 using Microsoft.EntityFrameworkCore;
 using ACG_Class.Model.Class;
 using ACG_Class.Model.ModelMemory.Class;
-using Telegram.Bot.Types;
 using ACG_Class.Model.ServerError;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
