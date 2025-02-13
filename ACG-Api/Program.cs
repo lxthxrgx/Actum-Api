@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ACG_Class.Database;
+using ACG_Api.Database;
 using Microsoft.Extensions.FileProviders;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.Office.Interop.Word;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -110,6 +112,12 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 var staticFilesPath = builder.Configuration["StaticFilesPath"];
+
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

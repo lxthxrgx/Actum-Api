@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ACG_Class.Model.NewClass;
 
-namespace ACG_Class.Database
+namespace ACG_Api.Database
 {
     public class NewDatabaseModel : DbContext
     {
