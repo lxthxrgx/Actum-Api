@@ -12,6 +12,7 @@ namespace ACG_Class.Model.NewClass
         int NumberGroup { get; set; }
         string NameGroup { get; set; }
     }
+
     interface I2DOtherInfo
     {
         string? Pibs { get; set; }
@@ -26,7 +27,9 @@ namespace ACG_Class.Model.NewClass
     {
         public int Id { get; set; }
         public int NumberGroup { get; set; }
-        public string NameGroup { get; set; }
+
+        public int Id_D1 {get; set;}
+        public _1D D1 {get; set;}
 
         public string? Pibs { get; set; }
         public string Address { get; set; }
