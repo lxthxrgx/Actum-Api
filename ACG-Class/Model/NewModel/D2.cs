@@ -10,7 +10,6 @@ namespace ACG_Class.Model.NewClass
     {
         int Id { get; set; }
         int NumberGroup { get; set; }
-        string NameGroup { get; set; }
     }
 
     interface I2DOtherInfo

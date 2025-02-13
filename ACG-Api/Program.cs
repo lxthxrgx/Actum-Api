@@ -24,6 +24,15 @@ builder.Services.AddDbContext<DataBaseContext>(options =>
         .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
 });
 
+builder.Services.AddDbContext<NewDatabaseModel>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("NewDatabaseConnection"));
+    options.EnableSensitiveDataLogging(false);
+    options.UseLoggerFactory(LoggerFactory.Create(builder => builder
+        .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
+        .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
+});
+
 builder.Services.AddDbContext<DataBaseArchive>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("ArchiveConnection"));
