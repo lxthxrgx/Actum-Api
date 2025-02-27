@@ -28,9 +28,9 @@ namespace ACG_Class.Model.NewModel
     {
         public int Id { get; set; }
         public int NumberGroup { get; set; }
-        public string NameGroup { get; set; }
+        public string NameGroup { get; set; } = "Default NameGrop";
         public string? Pibs { get; set; }
-        public string Address { get; set; }
+        public string Address { get; set; } = "Default Address";
         public double? Area { get; set; }
         public bool? isAlert { get; set; } = false;
         public DateTime? DateCloseDepartment { get; set; }
@@ -43,5 +43,6 @@ namespace ACG_Class.Model.NewModel
 
         public ICollection<Counterparty> Counterparty { get; } = new List<Counterparty>();
         public ICollection<Guard> Guard { get; } = new List<Guard>();
+        public ICollection<Sublease> Sublease { get; } = new List<Sublease>();
     }
 }

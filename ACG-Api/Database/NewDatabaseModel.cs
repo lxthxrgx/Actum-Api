@@ -10,8 +10,8 @@ namespace ACG_Api.Database
 {
     public class NewDatabaseModel : DbContext
     {
-        public DbSet<Counterparty> Counterparty { get; set; }
-        public DbSet<Group> Groups { get; set; }
+        public required DbSet<Counterparty> Counterparty { get; set; }
+        public required DbSet<Group> Groups { get; set; }
 
         public NewDatabaseModel(DbContextOptions<NewDatabaseModel> options) : base(options)
         {
@@ -21,11 +21,23 @@ namespace ACG_Api.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Counterparty>()
-                .HasMany(e => e.NumberGroup)
-                .WithOne(e => e.D1)
-                .HasForeignKey(e => e.Id_D1)
-                .IsRequired().OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Group>()
+            .HasMany(e => e.Counterparty)
+            .WithOne(e => e.Group)
+            .HasForeignKey(e => e.Id_Group)
+            .IsRequired().OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Group>()
+            .HasMany(e => e.Guard)
+            .WithOne(e => e.Group)
+            .HasForeignKey(e => e.Id_Group)
+            .IsRequired().OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Group>()
+            .HasMany(e => e.Sublease)
+            .WithOne(e => e.Group)
+            .HasForeignKey(e => e.Id_Group)
+            .IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

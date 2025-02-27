@@ -12,22 +12,22 @@ namespace ACG_Class.Model.NewModel
         public int Id {get; set;}
 
         public int Id_Group { get; set; }
-        public Group Group { get; set; }
+        public required Group Group { get; set; }
 
-        public string Fullname {get; set;}
-        public string Address {get; set;}
-        public string Edryofop {get; set;}
-        public string BanckAccount {get; set;}
-        public string Director {get; set;}
-        public string ResPerson {get; set;}
-        public string Phone {get; set;}
-        public string Email {get; set;}
-        public string Status {get; set;}
+        public required string Fullname {get; set;}
+        public required string Address {get; set;}
+        public required string Edryofop {get; set;}
+        public required string BanckAccount {get; set;}
+        public required string Director {get; set;}
+        public required string ResPerson {get; set;}
+        public required string Phone {get; set;}
+        public required string Email {get; set;}
+        public required string Status {get; set;}
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public string CreatedBy { get; set; } = "";
+        public required string CreatedBy { get; set; }
         public bool IsDeleted { get; set; } = false;
-        public DateTime DeleteTime { get; set; }
-        public string DeletedBy { get; set; } = "";
+        public DateTime DeleteTime { get; set; } = DateTime.UtcNow;
+        public required string DeletedBy { get; set; }
     }
 }

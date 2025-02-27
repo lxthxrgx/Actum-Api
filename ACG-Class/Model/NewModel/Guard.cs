@@ -11,13 +11,11 @@ namespace ACG_Class.Model.NewModel
     public class Guard : IDelete, ICreate
     {
         public int Id { get; set; }
-
         public int Id_Group { get; set; }
-        public Group Group { get; set; }
-
-        public string address { get; set; }
-        public string OhronnaComp { get; set; }
-        public string NumDog { get; set; }
+        public required Group Group { get; set; }
+        public required string Address { get; set; }
+        public required string OhronnaComp { get; set; }
+        public required string NumDog { get; set; }
         public string? NumDog2 { get; set; }
         public DateTime StrokDii { get; set; }
         public DateTime? StrokDii2 { get; set; }
@@ -38,7 +36,7 @@ namespace ACG_Class.Model.NewModel
         public int Id { get; set; }
 
         public int Id_Guard { get; set; }
-        public Guard Guard { get; set; }
+        public required Guard Guard { get; set; }
         public string? PathTOServerFiles { get; set; }
     }
 }
