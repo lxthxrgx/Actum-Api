@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ACG_Class.Model.NewModel.General;
 
-namespace ACG_Class.Model.NewClass
+namespace ACG_Class.Model.NewModel
 {
     interface I2D
     {
         int Id { get; set; }
         int NumberGroup { get; set; }
+        string NameGroup { get; set; }
     }
 
     interface I2DOtherInfo
@@ -22,18 +24,24 @@ namespace ACG_Class.Model.NewClass
     }
 
 
-    public class _2D : I2D, I2DOtherInfo
+    public class Group : I2D, I2DOtherInfo, IDelete, ICreate
     {
         public int Id { get; set; }
         public int NumberGroup { get; set; }
-
-        public int Id_D1 {get; set;}
-        public _1D D1 {get; set;}
-
+        public string NameGroup { get; set; }
         public string? Pibs { get; set; }
         public string Address { get; set; }
         public double? Area { get; set; }
         public bool? isAlert { get; set; } = false;
         public DateTime? DateCloseDepartment { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string CreatedBy { get; set; } = "";
+        public bool IsDeleted { get; set; } = false;
+        public DateTime DeleteTime { get; set; }
+        public string DeletedBy { get; set; } = "";
+
+        public ICollection<Counterparty> Counterparty { get; } = new List<Counterparty>();
+        public ICollection<Guard> Guard { get; } = new List<Guard>();
     }
 }

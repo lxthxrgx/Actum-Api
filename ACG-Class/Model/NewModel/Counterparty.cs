@@ -3,20 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ACG_Class.Model.NewModel.General;
 
-namespace ACG_Class.Model.NewClass
+namespace ACG_Class.Model.NewModel
 {
-    interface ID1
-    {
-        string NameGroup {get; set;}
-    }
-
-    public class _1D : ID1
+    public class Counterparty : IDelete, ICreate
     {
         public int Id {get; set;}
 
-        public ICollection<_2D> NumberGroup { get; } = new List<_2D>();
-        public string NameGroup {get; set;}
+        public int Id_Group { get; set; }
+        public Group Group { get; set; }
 
         public string Fullname {get; set;}
         public string Address {get; set;}
@@ -27,5 +23,11 @@ namespace ACG_Class.Model.NewClass
         public string Phone {get; set;}
         public string Email {get; set;}
         public string Status {get; set;}
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string CreatedBy { get; set; } = "";
+        public bool IsDeleted { get; set; } = false;
+        public DateTime DeleteTime { get; set; }
+        public string DeletedBy { get; set; } = "";
     }
 }
