@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using ACG_Class.Database;
 using ACG_Api.Database;
 using Microsoft.Extensions.FileProviders;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
-using Microsoft.Office.Interop.Word;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -17,47 +15,48 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //EF CORE CONNECTON
-builder.Services.AddDbContext<DataBaseContext>(options =>
-{
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-    options.EnableSensitiveDataLogging(false);
-    options.UseLoggerFactory(LoggerFactory.Create(builder => builder
-        .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
-        .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
-});
 
 builder.Services.AddDbContext<NewDatabaseModel>(options =>
 {
-    options.UseSqlite(builder.Configuration.GetConnectionString("NewDatabaseConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.EnableSensitiveDataLogging(false);
     options.UseLoggerFactory(LoggerFactory.Create(builder => builder
         .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
         .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
 });
 
-builder.Services.AddDbContext<DataBaseArchive>(options =>
-{
-    options.UseSqlite(builder.Configuration.GetConnectionString("ArchiveConnection"));
-    options.UseLoggerFactory(LoggerFactory.Create(builder => builder
-        .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
-        .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
-});
+// builder.Services.AddDbContext<NewDatabaseModel>(options =>
+// {
+//     options.UseSqlite(builder.Configuration.GetConnectionString("NewDatabaseConnection"));
+//     options.EnableSensitiveDataLogging(false);
+//     options.UseLoggerFactory(LoggerFactory.Create(builder => builder
+//         .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
+//         .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
+// });
 
-builder.Services.AddDbContext<DataBaseUser>(options =>
-{
-    options.UseSqlite(builder.Configuration.GetConnectionString("UserConnection"));
-    options.UseLoggerFactory(LoggerFactory.Create(builder => builder
-        .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
-        .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
-});
+// builder.Services.AddDbContext<DataBaseArchive>(options =>
+// {
+//     options.UseSqlite(builder.Configuration.GetConnectionString("ArchiveConnection"));
+//     options.UseLoggerFactory(LoggerFactory.Create(builder => builder
+//         .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
+//         .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
+// });
 
-builder.Services.AddDbContext<MemoryDb>(options =>
-{
-    options.UseInMemoryDatabase("InMemoryDb");
-    options.UseLoggerFactory(LoggerFactory.Create(builder => builder
-        .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
-        .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
-});
+// builder.Services.AddDbContext<DataBaseUser>(options =>
+// {
+//     options.UseSqlite(builder.Configuration.GetConnectionString("UserConnection"));
+//     options.UseLoggerFactory(LoggerFactory.Create(builder => builder
+//         .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
+//         .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
+// });
+
+// builder.Services.AddDbContext<MemoryDb>(options =>
+// {
+//     options.UseInMemoryDatabase("InMemoryDb");
+//     options.UseLoggerFactory(LoggerFactory.Create(builder => builder
+//         .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
+//         .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
+// });
 
 //TASKMANAGER CONECCTION TO DATABASE
 //builder.Services.AddDbContext<TaskManager>(options =>
