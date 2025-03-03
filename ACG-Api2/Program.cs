@@ -12,6 +12,18 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<TelegramBot>();
 builder.Services.Configure<TelegramBotSettings>(builder.Configuration.GetSection("TelegramBot"));
 
+//CORS 
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +35,8 @@ if (app.Environment.IsDevelopment())
 var bot = app.Services.GetRequiredService<TelegramBot>().BotStart();
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

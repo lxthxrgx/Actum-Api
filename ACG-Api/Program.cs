@@ -4,7 +4,7 @@ using Microsoft.Extensions.FileProviders;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+// var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -110,7 +110,7 @@ builder.WebHost.ConfigureKestrel(options =>
     options.Listen(staticIP, staticPortHttp);
 });
 
-var staticFilesPath = builder.Configuration["StaticFilesPath"];
+string staticFilesPath = builder.Configuration["StaticFilesPath"] ?? "u'r file path";
 
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>

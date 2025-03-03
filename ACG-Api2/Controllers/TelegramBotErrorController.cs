@@ -18,9 +18,8 @@ namespace ACG_Api2.Controllers
 
         public class BodyError
         {
-            public int Id { get; set; }
             public string Name { get; set; }
-            public string Error { get; set; }
+            public required string Error { get; set; }
             public DateTime Date { get; set; }
 
             public void SetKievTime()
@@ -31,6 +30,20 @@ namespace ACG_Api2.Controllers
             }
 
         }
+
+        public class BodyErrorClient
+        {
+            public required string Error {get; set;}
+            public DateTime Date {get; set;}
+
+           public void SetKievTime()
+            {
+                TimeZoneInfo kievTimeZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time");
+
+                Date = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, kievTimeZone);
+            }
+        }
+
         // TEST CONTROLLERS START
         // GET: api/<TBErrorController>
         [HttpPost("ServerTest")]
@@ -81,20 +94,29 @@ namespace ACG_Api2.Controllers
             return Ok(new { success = true, message = "Error message sent successfully" });
         }
 
-        [HttpPost("Client")]
-        public async Task<IActionResult> Client([FromBody] BodyError berror)
-        {
-            try
-            {
-                berror.SetKievTime();
-                await _telegramBot.SendErrorMessage($"⚠️ CLIENT ERROR \nClass: {GetType().Name} \nName Method: {nameof(Client)} \nTime: {berror.Date} \nError message: {berror.Error}");
-            }
-            catch (Exception ex)
-            {
-                await _telegramBot.SendErrorMessage(ServerError.MessageFromClient(ex, GetType().Name, nameof(Client)));
-            }
-            return Ok(new { success = true, message = "Error message sent successfully" });
-        }
+[HttpPost("Client")]
+public async Task<IActionResult> Client([FromBody] BodyErrorClient berror)
+{
+    if (berror == null || string.IsNullOrEmpty(berror.Error))
+    {
+        // Если запрос не содержит данных или данные некорректны, возвращаем ошибку 400 (Bad Request)
+        return BadRequest(new { success = false, message = "Invalid data in request" });
+    }
+
+    try
+    {
+        berror.SetKievTime();
+        await _telegramBot.SendErrorMessage($"⚠️ CLIENT ERROR \nTime: {berror.Date} \nError message: {berror.Error}");
+    }
+    catch (Exception ex)
+    {
+        await _telegramBot.SendErrorMessage(ServerError.MessageFromClient(ex, GetType().Name, nameof(Client)));
+        return StatusCode(500, new { success = false, message = "Internal server error" });
+    }
+
+    return Ok(new { success = true, message = "Error message sent successfully" });
+}
+
 
         //CONTROLLERS FOR PROD END
     }

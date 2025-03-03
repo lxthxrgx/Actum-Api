@@ -84,7 +84,7 @@ namespace ACG_Api2.Middleware
 
     public class TelegramBotSettings
     {
-        public string TelegramBotApi { get; set; }
+        public string TelegramBotApi { get; set; } = "ur api";
         public long TelegramBotUser { get; set; }
     }
 }
