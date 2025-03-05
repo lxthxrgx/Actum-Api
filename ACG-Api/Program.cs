@@ -82,11 +82,11 @@ builder.Services.AddDbContext<NewDatabaseModel>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowAllOrigins", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy.AllowAnyOrigin()   // Разрешить все источники
+              .AllowAnyMethod()   // Разрешить все методы
+              .AllowAnyHeader();  // Разрешить все заголовки
     });
 });
 
@@ -138,7 +138,7 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.UseHttpsRedirection();
 //app.UseCors(MyAllowSpecificOrigins);
-app.UseCors();
+app.UseCors("AllowAllOrigins");
 app.UseAuthorization();
 
 app.MapControllers();
