@@ -4,7 +4,7 @@ using Microsoft.Extensions.FileProviders;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 
-// var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -82,12 +82,14 @@ builder.Services.AddDbContext<NewDatabaseModel>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins", policy =>
-    {
-        policy.AllowAnyOrigin()   // Разрешить все источники
-              .AllowAnyMethod()   // Разрешить все методы
-              .AllowAnyHeader();  // Разрешить все заголовки
-    });
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5173")
+                                .AllowAnyHeader()  // Разрешить любые заголовки
+                                .AllowAnyMethod()  // Разрешить любые методы (GET, POST, PUT, DELETE)
+                                .AllowCredentials(); // При необходимости можно разрешить отправку учетных данных (например, куки)
+                      });
 });
 
 // CERTIFICATE HTTPS & HTTP SETTINGS
@@ -95,8 +97,14 @@ var certificatePath = builder.Configuration["CertificatePath"];
 var certificatePassword = builder.Configuration["CertificatePassword"];
 var cert = new X509Certificate2(certificatePath, certificatePassword, X509KeyStorageFlags.MachineKeySet);
 
-var httpsIP = IPAddress.Parse(builder.Configuration["HttpsIP"] ?? "0.0.0.0");
-var staticIP = IPAddress.Parse(builder.Configuration["StaticIP"] ?? "0.0.0.0");
+var httpsIP = string.IsNullOrWhiteSpace(builder.Configuration["HttpsIP"])
+    ? IPAddress.Parse("0.0.0.0")
+    : IPAddress.Parse(builder.Configuration["HttpsIP"]);
+
+var staticIP = string.IsNullOrWhiteSpace(builder.Configuration["StaticIP"])
+    ? IPAddress.Parse("0.0.0.0")
+    : IPAddress.Parse(builder.Configuration["StaticIP"]);
+
 var staticPortHttps = int.Parse(builder.Configuration["StaticPortHttps"] ?? "5001");
 var staticPortHttp = int.Parse(builder.Configuration["StaticPortHttp"] ?? "8080");
 
@@ -137,8 +145,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseHttpsRedirection();
-//app.UseCors(MyAllowSpecificOrigins);
-app.UseCors("AllowAllOrigins");
+app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthorization();
 
 app.MapControllers();

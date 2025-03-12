@@ -5,19 +5,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Reflection;
 
-namespace ACG_Api.Controllers.GroupController
+namespace ACG_Api.Controllers.ControllerGroup
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class controllerGroup : ControllerBase
+    public class groupController : ControllerBase
     {
         private readonly NewDatabaseModel _newcontext;
-        public controllerGroup(NewDatabaseModel newcontext)
+        public groupController(NewDatabaseModel newcontext)
         {
             _newcontext = newcontext;
         }
 
-        [HttpGet]
+        [HttpGet("GETcontollerGroup")]
         public async Task<IActionResult> Get()
         {
             return Ok(await _newcontext.Groups.ToListAsync());
@@ -26,7 +26,7 @@ namespace ACG_Api.Controllers.GroupController
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            if( id == null)
+            if( id < 0)
                 return StatusCode(400, new {error = "id can't be null"});
             
             var dataToSend = await _newcontext.Groups.FirstOrDefaultAsync(x => x.Id == id);
@@ -38,12 +38,14 @@ namespace ACG_Api.Controllers.GroupController
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Group data)
+        public async Task<IActionResult> Post([FromBody] List<Group> data)
         {
             if(data == null)
                 return StatusCode(400, new {error = "data cant be null"});
-
-            await _newcontext.AddAsync(data);
+            foreach(var value in data)
+            {
+                await _newcontext.AddAsync(value);
+            }
             await _newcontext.SaveChangesAsync();
             return Ok();
         }
@@ -51,7 +53,7 @@ namespace ACG_Api.Controllers.GroupController
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] Group value)
         {
-            if(id == null)
+            if( id < 0)
                 return StatusCode(400, new {error = "ID can't be null"});
 
             if(value == null)
@@ -60,8 +62,6 @@ namespace ACG_Api.Controllers.GroupController
             try
             {
                 var dataToUpdate = await _newcontext.Groups.FirstOrDefaultAsync(x => x.Id == id);
-                dataToUpdate.NumberGroup = value.NumberGroup;
-                dataToUpdate.NameGroup = value.NameGroup;
                 dataToUpdate.Pibs = value.Pibs;
                 dataToUpdate.Address = value.Address;
                 dataToUpdate.Area = value.Area;
@@ -83,15 +83,20 @@ namespace ACG_Api.Controllers.GroupController
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            if(id == null)
+            if(id < 0)
                 return StatusCode(400, new {error = "data can't be null"});
 
             var dataToDelete = await _newcontext.Groups.FirstOrDefaultAsync(x => x.Id == id);
-
-            _newcontext.Groups.Remove(dataToDelete);
-            await _newcontext.SaveChangesAsync();
-
-            return Ok();
+            if (dataToDelete != null)
+            {
+                _newcontext.Groups.Remove(dataToDelete);
+                await _newcontext.SaveChangesAsync();
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(400, "Null data to delete, check Id");
+            }
         }
 
     }
