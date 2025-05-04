@@ -1,0 +1,24 @@
+using Microsoft.AspNetCore.Mvc;
+using ACG_Class.Model.NewModel;
+using ACG_Api.service;
+
+namespace ACG_Api.Controllers.GuardController
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class guardController : ControllerBase
+    {
+        private readonly GuardService _guardService;
+
+        public guardController(GuardService guardService)
+        {
+            _guardService = guardService;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var data = await _guardService.Get();
+            return Ok(data);
+        }
+    }
+}

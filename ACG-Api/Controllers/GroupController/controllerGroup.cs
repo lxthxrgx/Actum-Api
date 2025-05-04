@@ -11,8 +11,8 @@ namespace ACG_Api.Controllers.ControllerGroup
     [ApiController]
     public class groupController : ControllerBase
     {
-        private readonly NewDatabaseModel _newcontext;
-        public groupController(NewDatabaseModel newcontext)
+        private readonly DatabaseModel _newcontext;
+        public groupController(DatabaseModel newcontext)
         {
             _newcontext = newcontext;
         }

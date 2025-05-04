@@ -93,30 +93,30 @@ builder.Services.AddCors(options =>
 });
 
 // CERTIFICATE HTTPS & HTTP SETTINGS
-var certificatePath = builder.Configuration["CertificatePath"];
-var certificatePassword = builder.Configuration["CertificatePassword"];
-var cert = new X509Certificate2(certificatePath, certificatePassword, X509KeyStorageFlags.MachineKeySet);
+// var certificatePath = builder.Configuration["CertificatePath"];
+// var certificatePassword = builder.Configuration["CertificatePassword"];
+// var cert = new X509Certificate2(certificatePath, certificatePassword, X509KeyStorageFlags.MachineKeySet);
 
-var httpsIP = string.IsNullOrWhiteSpace(builder.Configuration["HttpsIP"])
-    ? IPAddress.Parse("0.0.0.0")
-    : IPAddress.Parse(builder.Configuration["HttpsIP"]);
+// var httpsIP = string.IsNullOrWhiteSpace(builder.Configuration["HttpsIP"])
+//     ? IPAddress.Parse("0.0.0.0")
+//     : IPAddress.Parse(builder.Configuration["HttpsIP"]);
 
-var staticIP = string.IsNullOrWhiteSpace(builder.Configuration["StaticIP"])
-    ? IPAddress.Parse("0.0.0.0")
-    : IPAddress.Parse(builder.Configuration["StaticIP"]);
+// var staticIP = string.IsNullOrWhiteSpace(builder.Configuration["StaticIP"])
+//     ? IPAddress.Parse("0.0.0.0")
+//     : IPAddress.Parse(builder.Configuration["StaticIP"]);
 
-var staticPortHttps = int.Parse(builder.Configuration["StaticPortHttps"] ?? "5001");
-var staticPortHttp = int.Parse(builder.Configuration["StaticPortHttp"] ?? "8080");
+// var staticPortHttps = int.Parse(builder.Configuration["StaticPortHttps"] ?? "5001");
+// var staticPortHttp = int.Parse(builder.Configuration["StaticPortHttp"] ?? "8080");
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.Listen(httpsIP, staticPortHttps, listenOptions =>
-    {
-        listenOptions.UseHttps(cert);
-    });
+// builder.WebHost.ConfigureKestrel(options =>
+// {
+//     options.Listen(httpsIP, staticPortHttps, listenOptions =>
+//     {
+//         listenOptions.UseHttps(cert);
+//     });
 
-    options.Listen(staticIP, staticPortHttp);
-});
+//     options.Listen(staticIP, staticPortHttp);
+// });
 
 string staticFilesPath = builder.Configuration["StaticFilesPath"] ?? "u'r file path";
 
@@ -138,11 +138,11 @@ if (app.Environment.IsDevelopment())
 //PATH TO PDF FILES
 app.UseStaticFiles();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(staticFilesPath),
-    RequestPath = "/pdf",
-});
+// app.UseStaticFiles(new StaticFileOptions
+// {
+//     FileProvider = new PhysicalFileProvider(staticFilesPath),
+//     RequestPath = "/pdf",
+// });
 
 app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);

@@ -4,17 +4,17 @@ using ACG_Class.Model.NewModel;
 
 namespace ACG_Api.Database
 {
-    public class NewDatabaseModel : DbContext
+    public class DatabaseModel : DbContext
     {
         public DbSet<Counterparty> Counterparty { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Sublease> Sublease { get; set; }
         public DbSet<Guard> Guard { get; set; }
 
-        public NewDatabaseModel(DbContextOptions<NewDatabaseModel> options) : base(options)
+        public DatabaseModel(DbContextOptions<DatabaseModel> options) : base(options)
         {
         }
-        public NewDatabaseModel() : base()
+        public DatabaseModel() : base()
         {
         }
 
@@ -42,21 +42,21 @@ namespace ACG_Api.Database
         }
         }
 
-        public class NewDatabaseModelFactory : IDesignTimeDbContextFactory<NewDatabaseModel>
+        public class NewDatabaseModelFactory : IDesignTimeDbContextFactory<DatabaseModel>
         {
-            public NewDatabaseModel CreateDbContext(string[] args)
+            public DatabaseModel CreateDbContext(string[] args)
             {
                 var configuration = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json")
                     .Build();
 
-                var optionsBuilder = new DbContextOptionsBuilder<NewDatabaseModel>();
+                var optionsBuilder = new DbContextOptionsBuilder<DatabaseModel>();
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
                 optionsBuilder.UseNpgsql(connectionString);
 
-                return new NewDatabaseModel(optionsBuilder.Options);
+                return new DatabaseModel(optionsBuilder.Options);
             }
         }
 }

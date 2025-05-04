@@ -9,8 +9,8 @@ namespace ACG_Api.Controllers.CounterpartyController
     [ApiController]
     public class counterpartyController : ControllerBase
     {
-        private readonly NewDatabaseModel _newcontext;
-        public counterpartyController(NewDatabaseModel newcontext)
+        private readonly DatabaseModel _newcontext;
+        public counterpartyController(DatabaseModel newcontext)
         {
             _newcontext = newcontext;
         }
