@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACG_Class.Model.NewModel.General
+namespace ACG_Api.model.General
 {
     interface ICreate
     {

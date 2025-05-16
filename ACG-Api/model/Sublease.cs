@@ -1,6 +1,6 @@
-using ACG_Class.Model.NewModel;
+using ACG_Api.model;
 
-namespace ACG_Class.Model.NewModel
+namespace ACG_Api.model
 {
     public class Sublease
     {

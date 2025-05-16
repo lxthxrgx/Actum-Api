@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using ACG_Class.Model.NewModel.General;
-
-namespace ACG_Class.Model.NewModel
+using ACG_Api.model.General;
+using ACG_Api.model;
+namespace ACG_Api.model
 {
     interface I2D
     {

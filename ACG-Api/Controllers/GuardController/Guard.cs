@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using ACG_Class.Model.NewModel;
+using ACG_Api.model;
 using ACG_Api.service;
 
 namespace ACG_Api.Controllers.GuardController

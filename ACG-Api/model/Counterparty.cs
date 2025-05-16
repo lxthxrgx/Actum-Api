@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ACG_Class.Model.NewModel.General;
+using ACG_Api.model.General;
 
-namespace ACG_Class.Model.NewModel
-{
+namespace ACG_Api.model{
     public class Counterparty : IDelete, ICreate
     {
         public int Id {get; set;}

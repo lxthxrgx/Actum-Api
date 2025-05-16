@@ -1,5 +1,6 @@
 using ACG_Api.Database;
 using Microsoft.EntityFrameworkCore;
+using ACG_Api.model;
 
 namespace ACG_Api.service{
 

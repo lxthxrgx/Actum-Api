@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using ACG_Class.Model.NewModel;
+using ACG_Api.model;
 
 namespace ACG_Api.Database
 {
@@ -42,7 +42,7 @@ namespace ACG_Api.Database
         }
         }
 
-        public class NewDatabaseModelFactory : IDesignTimeDbContextFactory<DatabaseModel>
+        public class DatabaseModelFactory : IDesignTimeDbContextFactory<DatabaseModel>
         {
             public DatabaseModel CreateDbContext(string[] args)
             {

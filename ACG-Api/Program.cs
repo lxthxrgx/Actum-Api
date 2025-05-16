@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ACG_Api.Database;
-using Microsoft.Extensions.FileProviders;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
+using ACG_Api.service;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +14,7 @@ builder.Services.AddSwaggerGen();
 
 //EF CORE CONNECTON
 
-builder.Services.AddDbContext<NewDatabaseModel>(options =>
+builder.Services.AddDbContext<DatabaseModel>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.EnableSensitiveDataLogging(false);
@@ -67,6 +65,9 @@ builder.Services.AddDbContext<NewDatabaseModel>(options =>
 //        .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
 //        .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
 //});
+
+//Denpendency Injections
+builder.Services.AddScoped<GuardService>();
 
 //CORS
 //builder.Services.AddCors(options =>
