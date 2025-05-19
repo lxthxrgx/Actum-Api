@@ -14,10 +14,18 @@ namespace ACG_Api.Controllers.GuardController
         {
             _guardService = guardService;
         }
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var data = await _guardService.Get();
+            return Ok(data);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int Id)
+        {
+            var data = await _guardService.GetById(Id);
             return Ok(data);
         }
     }

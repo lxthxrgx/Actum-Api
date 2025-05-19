@@ -15,5 +15,17 @@ namespace ACG_Api.service{
         {
             return await _context.Guard.ToListAsync();
         }
+
+        public async Task<Guard> GetById(int Id)
+        {
+            if (Id == 0)
+                throw new ArgumentException("Id can't be 0", nameof(Id));
+
+            var data = await _context.Guard.Where(x => x.Id == Id).SingleOrDefaultAsync();
+            if (data == null)
+                throw new InvalidOperationException($"Can't find data by this Id: {Id}");
+
+            return data;
+        }
     }
 }
