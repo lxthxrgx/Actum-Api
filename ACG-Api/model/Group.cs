@@ -1,5 +1,6 @@
 using ACG_Api.model.General;
 using ACG_Api.model;
+using System.Text.Json.Serialization;
 namespace ACG_Api.model
 {
     interface I2D
@@ -31,14 +32,21 @@ namespace ACG_Api.model
         public bool? isAlert { get; set; } = false;
         public DateTime? DateCloseDepartment { get; set; } = DateTime.MinValue;
 
+        [JsonIgnore]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [JsonIgnore]
         public string CreatedBy { get; set; } = "";
+        [JsonIgnore]
         public bool IsDeleted { get; set; } = false;
+        [JsonIgnore]
         public DateTime DeleteTime { get; set; } = DateTime.MinValue;
+        [JsonIgnore]
         public string DeletedBy { get; set; } = "";
-
+        [JsonIgnore]
         public ICollection<Counterparty> Counterparty { get; } = new List<Counterparty>();
+        [JsonIgnore]
         public ICollection<Guard> Guard { get; } = new List<Guard>();
+        [JsonIgnore]
         public ICollection<Sublease> Sublease { get; } = new List<Sublease>();
     }
 }
