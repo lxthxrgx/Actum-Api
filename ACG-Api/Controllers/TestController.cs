@@ -30,7 +30,20 @@ namespace ACG_Api.Controllers
         [HttpGet("TestTree")]
         public string GetTestXmlTree()
         {
-            return _xpath.GetXmlTree();
+            try
+            {
+                XPath processor = new XPath();
+                processor.WriteXmlTree("agreementNumber", "666");
+                processor.WriteXmlTree("createdAt", "21/11/1111");
+                processor.Save();
+                return "Saved";
+            }catch(Exception ex)
+            {
+                Console.Write(ex.Message);
+                return ex.Message;
+            }
+           
+
         }
     }
 

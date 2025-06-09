@@ -2,8 +2,8 @@ using Microsoft.Office.Interop.Word;
 using System;
 using System.IO;
 using System.IO.Compression;
+using System.Text;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace ACG_Api.model.XPath
 {
@@ -11,40 +11,46 @@ namespace ACG_Api.model.XPath
     {
         const string DocxPath = "/home/ltx/Documents/Sublease.docx";
 
-        string a = "D:\\Projects\\CSharp\\ACG\\ACG\\wwwroot\\word\\1_Дог_ суборенда_ТОВ.docx";
+        string original = "C:\\Users\\wetqw\\Desktop\\Sublease.docx";
+        string output = "C:\\Users\\wetqw\\Desktop\\Test.docx";
+
+        private XmlDocument doc;
+        private XmlNamespaceManager nsManager;
+
+        public XPath()
+        {
+            string dataXml = DocxToXml(original);
+
+            doc = new XmlDocument();
+            doc.LoadXml(dataXml);
+
+            nsManager = new XmlNamespaceManager(doc.NameTable);
+            nsManager.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
+        }
 
         public string DocxToXml(string pathToDocx)
         {
-            string xmlContent;
-
             using (ZipArchive archive = ZipFile.OpenRead(pathToDocx))
             {
                 var entry = archive.GetEntry("word/document.xml");
-
-                if (entry == null)
-                {
-                    Console.WriteLine("Файл word/document.xml не найден в .docx архиве.");
-                    return "";
-                }
+                if (entry == null) throw new Exception("word/document.xml not found!");
 
                 using (var reader = new StreamReader(entry.Open()))
                 {
-                    xmlContent = reader.ReadToEnd();
-                    return xmlContent;
+                    return reader.ReadToEnd();
                 }
             }
         }
 
-        public string GetXmlTree()
+        public void GetXmlTree()
         {
-            XmlDocument doc = new XmlDocument();
             XPath xPath = new ();
 
-            string dataXml = xPath.DocxToXml(a);
+            string dataXml = xPath.DocxToXml(original);
 
             doc.Load(new StringReader(dataXml));
         
-            var nsManager = new XmlNamespaceManager(doc.NameTable);
+            nsManager = new XmlNamespaceManager(doc.NameTable);
             nsManager.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
 
 
@@ -83,7 +89,98 @@ namespace ACG_Api.model.XPath
                 }
 
             }
-            return "";
+        }
+
+        public void WriteXmlTree(string Tag, string Value)
+        {
+            var paragraphs = doc.SelectNodes("//w:sdt[w:*]", nsManager);
+
+            if (paragraphs != null)
+            {
+                foreach (XmlNode node in paragraphs)
+                {
+                    XmlNode? sdtPr = node.SelectSingleNode("w:sdtPr", nsManager);
+
+                    if (sdtPr != null)
+                    {
+                        var tag = sdtPr.SelectSingleNode("w:tag", nsManager);
+                        if (tag?.Attributes["w:val"]?.Value == Tag)
+                        {
+                            XmlNode? sdtContent = node.SelectSingleNode("w:sdtContent", nsManager);
+                            if (sdtContent != null)
+                            {
+                                var textNode = sdtContent.SelectSingleNode(".//w:t", nsManager);
+                                if (textNode != null)
+                                {
+                                    textNode.InnerText = Value;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void Save()
+        {
+            string updatedXml;
+            using (var stringWriter = new Utf8StringWriter())
+            using (var xmlWriter = XmlWriter.Create(stringWriter, new XmlWriterSettings
+            {
+                Indent = false,
+                Encoding = new UTF8Encoding(false)
+            }))
+            {
+                doc.Save(xmlWriter);
+                updatedXml = stringWriter.ToString();
+            }
+
+            SaveXmlToDocx(original, updatedXml, output);
+        }
+
+        public class Utf8StringWriter : StringWriter
+        {
+            public override Encoding Encoding => new UTF8Encoding(false);
+        }
+
+        public string GetModifiedXml(XmlDocument doc)
+        {
+            using (var sw = new StringWriter())
+            using (var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true }))
+            {
+                doc.Save(xw);
+                return sw.ToString();
+            }
+        }
+
+        public void SaveXmlToDocx(string originalDocxPath, string modifiedXml, string outputDocxPath)
+        {
+            using (FileStream fs = new FileStream(outputDocxPath, FileMode.Create))
+            using (ZipArchive originalArchive = ZipFile.Open(originalDocxPath, ZipArchiveMode.Read))
+            using (ZipArchive newArchive = new ZipArchive(fs, ZipArchiveMode.Create))
+            {
+                foreach (var entry in originalArchive.Entries)
+                {
+                    if (entry.FullName == "word/document.xml")
+                    {
+                        var newEntry = newArchive.CreateEntry("word/document.xml");
+                        using (var entryStream = newEntry.Open())
+                        using (var writer = new StreamWriter(entryStream))
+                        {
+                            writer.Write(modifiedXml);
+                        }
+                    }
+                    else
+                    {
+                        var newEntry = newArchive.CreateEntry(entry.FullName);
+                        using (var entryStream = newEntry.Open())
+                        using (var originalStream = entry.Open())
+                        {
+                            originalStream.CopyTo(entryStream);
+                        }
+                    }
+                }
+            }
         }
     }
 }
