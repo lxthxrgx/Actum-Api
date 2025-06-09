@@ -1,4 +1,3 @@
-using Microsoft.Office.Interop.Word;
 using System;
 using System.IO;
 using System.IO.Compression;
