@@ -23,11 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ACG-Class\ACG-Class.csproj" />
-    <ProjectReference Include="..\WordGeneration\WordGeneration.vbproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Controllers\Groups\" />
   </ItemGroup>
 
