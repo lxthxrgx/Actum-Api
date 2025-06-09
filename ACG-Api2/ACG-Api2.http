@@ -1,6 +1,0 @@
-@ACG_Api2_HostAddress = http://localhost:5138
-
-GET {{ACG_Api2_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
