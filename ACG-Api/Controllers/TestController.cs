@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Reflection;
 using ACG_Api.model.XPath;
-
+using ACG_Api.model.DTO;
+using ACG_Api.service.AutoDocService;
 
 namespace ACG_Api.Controllers
 {
@@ -15,10 +16,12 @@ namespace ACG_Api.Controllers
     public class Ping
     {
         private readonly XPath _xpath;
+        private readonly SubleseTovDog _SubtovDog;
 
-        public Ping(XPath xPath)
+        public Ping(XPath xPath, SubleseTovDog SubtovDog)
         {
             _xpath = xPath;
+            _SubtovDog = SubtovDog;
         }
 
         [HttpGet]
@@ -27,15 +30,12 @@ namespace ACG_Api.Controllers
             return "Pong";
         }
 
-        [HttpGet("TestTree")]
-        public string GetTestXmlTree()
+        [HttpPost("TestTree")]
+        public string GetTestXmlTree(DTOSubleaseTovDog data)
         {
             try
             {
-                XPath processor = new XPath();
-                processor.WriteXmlTree("agreementNumber", "666");
-                processor.WriteXmlTree("createdAt", "21/11/1111");
-                processor.Save();
+                _SubtovDog.SubleseTovDogWord(data);
                 return "Saved";
             }catch(Exception ex)
             {

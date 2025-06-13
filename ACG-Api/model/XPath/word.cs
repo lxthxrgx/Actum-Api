@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Xml;
@@ -8,10 +6,11 @@ namespace ACG_Api.model.XPath
 {
     public class XPath
     {
-        const string DocxPath = "/home/ltx/Documents/Sublease.docx";
+        const string original = "/home/ltx/Documents/Sublease.docx";
+        string output = "/home/ltx/Documents/SubleaseTest.docx";
 
-        string original = "C:\\Users\\wetqw\\Desktop\\Sublease.docx";
-        string output = "C:\\Users\\wetqw\\Desktop\\Test.docx";
+        // string original = "C:\\Users\\wetqw\\Desktop\\Sublease.docx";
+        // string output = "C:\\Users\\wetqw\\Desktop\\Test.docx";
 
         private XmlDocument doc;
         private XmlNamespaceManager nsManager;
@@ -64,15 +63,15 @@ namespace ACG_Api.model.XPath
                     if (sdtPr != null)
                     {
                         var alias = sdtPr.SelectSingleNode("w:alias", nsManager);
-                        if (alias?.Attributes["w:val"] != null)
+                        if (alias?.Attributes?["w:val"] != null)
                         {
-                            Console.WriteLine("Alias: " + alias.Attributes["w:val"].Value);
+                            Console.WriteLine("Alias: " + alias.Attributes?["w:val"]?.Value);
                         }
 
                         var tag = sdtPr.SelectSingleNode("w:tag", nsManager);
-                        if (tag?.Attributes["w:val"] != null)
+                        if (tag?.Attributes?["w:val"] != null)
                         {
-                            Console.WriteLine("Tag: " + tag.Attributes["w:val"].Value);
+                            Console.WriteLine("Tag: " + tag?.Attributes?["w:val"]?.Value);
                         }
                     }
 
@@ -103,7 +102,7 @@ namespace ACG_Api.model.XPath
                     if (sdtPr != null)
                     {
                         var tag = sdtPr.SelectSingleNode("w:tag", nsManager);
-                        if (tag?.Attributes["w:val"]?.Value == Tag)
+                        if (tag?.Attributes?["w:val"]?.Value == Tag)
                         {
                             XmlNode? sdtContent = node.SelectSingleNode("w:sdtContent", nsManager);
                             if (sdtContent != null)

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ACG_Api.Database;
 using ACG_Api.service;
 using ACG_Api.model.XPath;
+using ACG_Api.service.AutoDocService;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -70,6 +71,7 @@ builder.Services.AddDbContext<DatabaseModel>(options =>
 //Denpendency Injections
 builder.Services.AddScoped<GuardService>();
 builder.Services.AddTransient<XPath>();
+builder.Services.AddTransient<SubleseTovDog>();
 //CORS
 //builder.Services.AddCors(options =>
 //{
