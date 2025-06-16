@@ -31,8 +31,26 @@ namespace ACG_Api.Controllers
         }
 
         [HttpPost("TestTree")]
-        public string GetTestXmlTree(DTOSubleaseTovDog data)
+        public string GetTestXmlTree([FromBody]DTOSubleaseTovDog data)
         {
+            Console.WriteLine(data.ContractNumber);
+            Console.WriteLine(data.CreationDate);
+            Console.WriteLine(data.PipSublessor);
+            Console.WriteLine(data.rnokppSublessor);
+            Console.WriteLine(data.addressSublessor);
+            Console.WriteLine(data.PipDirector);
+            Console.WriteLine(data.PipsDirector);
+            Console.WriteLine(data.RoomArea);
+            Console.WriteLine(data.RoomAreaText);
+            Console.WriteLine(data.RoomAreaAddress);
+            Console.WriteLine(data.subleaseDopContractNumber);
+            Console.WriteLine(data.subleaseDopStartDate);
+            Console.WriteLine(data.subleaseDopName);
+            Console.WriteLine(data.subleaseDopRnokpp);
+            Console.WriteLine(data.StrokDii);
+            Console.WriteLine(data.Pricing);
+            Console.WriteLine(data.PricingText);
+            Console.WriteLine(data.BanckAccount);
             try
             {
                 _SubtovDog.SubleseTovDogWord(data);

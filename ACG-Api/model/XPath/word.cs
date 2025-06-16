@@ -6,11 +6,11 @@ namespace ACG_Api.model.XPath
 {
     public class XPath
     {
-        const string original = "/home/ltx/Documents/Sublease.docx";
-        string output = "/home/ltx/Documents/SubleaseTest.docx";
+        //const string original = "/home/ltx/Documents/Sublease.docx";
+        //string output = "/home/ltx/Documents/SubleaseTest.docx";
 
-        // string original = "C:\\Users\\wetqw\\Desktop\\Sublease.docx";
-        // string output = "C:\\Users\\wetqw\\Desktop\\Test.docx";
+        string original = "C:\\Users\\wetqw\\Desktop\\Sublease.docx";
+        string output = "C:\\Users\\wetqw\\Desktop\\Test.docx";
 
         private XmlDocument doc;
         private XmlNamespaceManager nsManager;

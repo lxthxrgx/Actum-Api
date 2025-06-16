@@ -13,7 +13,7 @@ namespace ACG_Api.service.AutoDocService
         {
             XPath xpath = new XPath();
             xpath.WriteXmlTree("ContractNumber", subleaseData.ContractNumber);
-            xpath.WriteXmlTree("CreationDate", subleaseData.CreationDate.ToString("dd.mm.yyyy"));
+            xpath.WriteXmlTree("CreationDate", subleaseData.CreationDate.ToString("dd.MM.yyyy"));
             xpath.WriteXmlTree("PipSublessor", subleaseData.PipSublessor);
             xpath.WriteXmlTree("rnokppSublessor", subleaseData.rnokppSublessor);
             xpath.WriteXmlTree("addressSublessor", subleaseData.addressSublessor);
@@ -23,10 +23,10 @@ namespace ACG_Api.service.AutoDocService
             xpath.WriteXmlTree("RoomAreaText", subleaseData.RoomAreaText);
             xpath.WriteXmlTree("RoomAreaAddress", subleaseData.RoomAreaAddress);
             xpath.WriteXmlTree("subleaseDopContractNumber", subleaseData.subleaseDopContractNumber);
-            xpath.WriteXmlTree("subleaseDopStartDate", subleaseData.subleaseDopStartDate.ToString("dd.mm.yyyy"));
+            xpath.WriteXmlTree("subleaseDopStartDate", subleaseData.subleaseDopStartDate.ToString("dd.MM.yyyy"));
             xpath.WriteXmlTree("subleaseDopName", subleaseData.subleaseDopName);
             xpath.WriteXmlTree("subleaseDopRnokpp", subleaseData.subleaseDopRnokpp);
-            xpath.WriteXmlTree("StrokDii", subleaseData.StrokDii.ToString("dd.mm.yyyy"));
+            xpath.WriteXmlTree("StrokDii", subleaseData.StrokDii.ToString("dd.MM.yyyy"));
             xpath.WriteXmlTree("Pricing", subleaseData.Pricing.ToString());
             xpath.WriteXmlTree("PricingText", subleaseData.PricingText);
             xpath.WriteXmlTree("BanckAccount", subleaseData.BanckAccount);
