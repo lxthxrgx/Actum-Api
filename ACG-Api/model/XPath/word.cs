@@ -6,18 +6,20 @@ namespace ACG_Api.model.XPath
 {
     public class XPath
     {
-        //const string original = "/home/ltx/Documents/Sublease.docx";
-        //string output = "/home/ltx/Documents/SubleaseTest.docx";
+        // const string original = "/home/ltx/Documents/Sublease.docx";
+        string output = "/home/ltx/Documents/";
 
-        string original = "C:\\Users\\wetqw\\Desktop\\Sublease.docx";
-        string output = "C:\\Users\\wetqw\\Desktop\\Test.docx";
+        // string original = "C:\\Users\\wetqw\\Desktop\\Sublease.docx";
+        // string output = "C:\\Users\\wetqw\\Desktop\\Test.docx";
 
         private XmlDocument doc;
         private XmlNamespaceManager nsManager;
+        private string _pathToTemplate;
 
-        public XPath()
+        public XPath(string pathToTemplate)
         {
-            string dataXml = DocxToXml(original);
+            _pathToTemplate = pathToTemplate;
+            string dataXml = DocxToXml(_pathToTemplate);
 
             doc = new XmlDocument();
             doc.LoadXml(dataXml);
@@ -42,9 +44,9 @@ namespace ACG_Api.model.XPath
 
         public void GetXmlTree()
         {
-            XPath xPath = new ();
+            XPath xPath = new (_pathToTemplate);
 
-            string dataXml = xPath.DocxToXml(original);
+            string dataXml = xPath.DocxToXml(_pathToTemplate);
 
             doc.Load(new StringReader(dataXml));
         
@@ -119,7 +121,7 @@ namespace ACG_Api.model.XPath
             }
         }
 
-        public void Save()
+        public void Save(string nameFile)
         {
             string updatedXml;
             using (var stringWriter = new Utf8StringWriter())
@@ -133,7 +135,7 @@ namespace ACG_Api.model.XPath
                 updatedXml = stringWriter.ToString();
             }
 
-            SaveXmlToDocx(original, updatedXml, output);
+            SaveXmlToDocx(_pathToTemplate, updatedXml, output + nameFile + ".docx");
         }
 
         public class Utf8StringWriter : StringWriter

@@ -70,7 +70,7 @@ builder.Services.AddDbContext<DatabaseModel>(options =>
 
 //Denpendency Injections
 builder.Services.AddScoped<GuardService>();
-builder.Services.AddTransient<XPath>();
+builder.Services.AddTransient<Func<string, XPath>>(provider => path => new XPath(path));
 builder.Services.AddTransient<SubleseTovDog>();
 //CORS
 //builder.Services.AddCors(options =>

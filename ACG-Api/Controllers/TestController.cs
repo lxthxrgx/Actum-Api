@@ -13,15 +13,15 @@ namespace ACG_Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class Ping
+    public class Ping : ControllerBase
     {
-        private readonly XPath _xpath;
+        private readonly Func<string, XPath> _xPathFactory;
         private readonly SubleseTovDog _SubtovDog;
 
-        public Ping(XPath xPath, SubleseTovDog SubtovDog)
+        public Ping(Func<string, XPath> xPathFactory, SubleseTovDog subtovDog)
         {
-            _xpath = xPath;
-            _SubtovDog = SubtovDog;
+            _xPathFactory = xPathFactory;
+            _SubtovDog = subtovDog;
         }
 
         [HttpGet]
