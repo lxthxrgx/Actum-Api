@@ -13,8 +13,8 @@ namespace ACG_Api.service.AutoDocService
         {
             XPath xpathSublease = new XPath("/home/ltx/Documents/TerminationContractTov.docx");
             xpathSublease.WriteXmlTree("ContractNumber", subleaseData.ContractNumber);
+            xpathSublease.WriteXmlTree("CreationContractDate", subleaseData.CreationContractDate.ToString("dd.MM.yyyy"));
             xpathSublease.WriteXmlTree("CreationDate", subleaseData.CreationDate.ToString("dd.MM.yyyy"));
-            xpathSublease.WriteXmlTree("ThisContractDate", subleaseData.ThisContractDate.ToString("dd.MM.yyyy"));
             xpathSublease.WriteXmlTree("PipSublessor", subleaseData.PipSublessor);
             xpathSublease.WriteXmlTree("rnokppSublessor", subleaseData.rnokppSublessor);
             xpathSublease.WriteXmlTree("addressSublessor", subleaseData.addressSublessor);

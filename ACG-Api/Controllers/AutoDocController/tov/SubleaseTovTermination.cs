@@ -12,9 +12,9 @@ namespace ACG_Api.Controllers.AutoDocController.tov
     {
         private readonly Func<string, XPath> _xPathFactory;
         private readonly SubleaseTovTermination _SubtovTerm;
-        private readonly ILogger<subleasedogtov> _logger;
+        private readonly ILogger<subleasetovtermination> _logger;
 
-        public subleasetovtermination(Func<string, XPath> xPathFactory, SubleaseTovTermination SubtovTerm, ILogger<subleasedogtov> logger){
+        public subleasetovtermination(Func<string, XPath> xPathFactory, SubleaseTovTermination SubtovTerm, ILogger<subleasetovtermination> logger){
             _logger = logger;
             _xPathFactory = xPathFactory;
             _SubtovTerm = SubtovTerm;

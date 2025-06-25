@@ -10,8 +10,8 @@ namespace ACG_Api.model.DTO
         public int NumberGroup {get; set;}
         public string NameGroup {get; set;} = "NameGroup";
         public string ContractNumber {get; set;} = "ContractNumber";
+        public DateTime CreationContractDate {get; set;}
         public DateTime CreationDate {get; set;}
-        public DateTime ThisContractDate {get; set;}
         public string PipSublessor {get; set;} = "PipSublessor";
         public string rnokppSublessor {get; set;} = "rnokpp";
         public string addressSublessor {get; set;} = "addressSublessor";
