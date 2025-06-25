@@ -8,13 +8,13 @@ namespace ACG_Api.Controllers.AutoDocController.tov
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class subleasedogtov : ControllerBase
+    public class sublease_tov_dog_act : ControllerBase
     {
         private readonly Func<string, XPath> _xPathFactory;
         private readonly SubleseTovDog _SubtovDog;
-        private readonly ILogger<subleasedogtov> _logger;
+        private readonly ILogger<sublease_tov_dog_act> _logger;
 
-        public subleasedogtov(Func<string, XPath> xPathFactory, SubleseTovDog subtovDog, ILogger<subleasedogtov> logger)
+        public sublease_tov_dog_act(Func<string, XPath> xPathFactory, SubleseTovDog subtovDog, ILogger<sublease_tov_dog_act> logger)
         {
             _logger = logger;
             _xPathFactory = xPathFactory;

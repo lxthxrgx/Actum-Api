@@ -8,17 +8,17 @@ namespace ACG_Api.Controllers.AutoDocController.tov
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class sublease_tov_termination : ControllerBase
+    public class sublease_tov_return_act : ControllerBase
     {
         private readonly Func<string, XPath> _xPathFactory;
-        private readonly SubleaseTovTermination _SubtovTerm;
-        private readonly ILogger<sublease_tov_termination> _logger;
-
-        public sublease_tov_termination(Func<string, XPath> xPathFactory, SubleaseTovTermination SubtovTerm, ILogger<sublease_tov_termination> logger){
+        private readonly SubleaseTovReturnAct _SubTovReturn;
+        private readonly ILogger<sublease_tov_return_act> _logger;
+        public sublease_tov_return_act(Func<string, XPath> xPathFactory, SubleaseTovReturnAct SubTovReturn, ILogger<sublease_tov_return_act> logger){
             _logger = logger;
             _xPathFactory = xPathFactory;
-            _SubtovTerm = SubtovTerm;
+            _SubTovReturn = SubTovReturn;
         }
+
         private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
             Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
@@ -26,13 +26,13 @@ namespace ACG_Api.Controllers.AutoDocController.tov
         };
 
         [HttpPost("create")]
-        public string GetTestXmlTree([FromBody]DTOSubleaseTermination data)
+        public string GetTestXmlTree([FromBody]DTOSubleaseTovreturnACt data)
         {
             var json = JsonSerializer.Serialize(data, _jsonOptions);
             _logger.LogInformation("User data SubtovTerm: {UserData}", json);
             try
             {
-                _SubtovTerm.SybleaseTovTerminationCreate(data);
+                _SubTovReturn.SubleaseTovReturnActCreate(data);
                 return "Saved";
             }catch(Exception ex)
             {
