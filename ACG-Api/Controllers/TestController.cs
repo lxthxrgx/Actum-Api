@@ -7,6 +7,7 @@ using System.Reflection;
 using ACG_Api.model.XPath;
 using ACG_Api.model.DTO;
 using ACG_Api.service.AutoDocService;
+using System.Text.Json;
 
 namespace ACG_Api.Controllers
 {
@@ -15,55 +16,12 @@ namespace ACG_Api.Controllers
 
     public class Ping : ControllerBase
     {
-        private readonly Func<string, XPath> _xPathFactory;
-        private readonly SubleseTovDog _SubtovDog;
-
-        public Ping(Func<string, XPath> xPathFactory, SubleseTovDog subtovDog)
-        {
-            _xPathFactory = xPathFactory;
-            _SubtovDog = subtovDog;
-        }
+        public Ping(){}
 
         [HttpGet]
         public string Get()
         {
             return "Pong";
         }
-
-        [HttpPost("TestTree")]
-        public string GetTestXmlTree([FromBody]DTOSubleaseTovDog data)
-        {
-            Console.WriteLine(data.ContractNumber);
-            Console.WriteLine(data.CreationDate);
-            Console.WriteLine(data.PipSublessor);
-            Console.WriteLine(data.rnokppSublessor);
-            Console.WriteLine(data.addressSublessor);
-            Console.WriteLine(data.PipDirector);
-            Console.WriteLine(data.PipsDirector);
-            Console.WriteLine(data.RoomArea);
-            Console.WriteLine(data.RoomAreaText);
-            Console.WriteLine(data.RoomAreaAddress);
-            Console.WriteLine(data.subleaseDopContractNumber);
-            Console.WriteLine(data.subleaseDopStartDate);
-            Console.WriteLine(data.subleaseDopName);
-            Console.WriteLine(data.subleaseDopRnokpp);
-            Console.WriteLine(data.StrokDii);
-            Console.WriteLine(data.Pricing);
-            Console.WriteLine(data.PricingText);
-            Console.WriteLine(data.BanckAccount);
-            try
-            {
-                _SubtovDog.SubleseTovDogWord(data);
-                return "Saved";
-            }catch(Exception ex)
-            {
-                Console.Write(ex.Message);
-                return ex.Message;
-            }
-           
-
-        }
     }
-
-    
 }

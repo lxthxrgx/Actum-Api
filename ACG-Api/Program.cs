@@ -72,6 +72,7 @@ builder.Services.AddDbContext<DatabaseModel>(options =>
 builder.Services.AddScoped<GuardService>();
 builder.Services.AddTransient<Func<string, XPath>>(provider => path => new XPath(path));
 builder.Services.AddTransient<SubleseTovDog>();
+builder.Services.AddTransient<SubleaseTovTermination>();
 //CORS
 //builder.Services.AddCors(options =>
 //{
