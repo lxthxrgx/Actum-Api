@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Text;
 using System.Xml;
+using ACG_Api.model.Test;
 
 namespace ACG_Api.model.XPath
 {
@@ -89,6 +90,51 @@ namespace ACG_Api.model.XPath
                 }
 
             }
+        }
+
+        public List<TestXmlTree> GetXmlTreeForTest()
+        {
+            var testList = new List<TestXmlTree>();
+
+            XPath xPath = new XPath(_pathToTemplate);
+            string dataXml = xPath.DocxToXml(_pathToTemplate);
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(new StringReader(dataXml));
+
+            XmlNamespaceManager nsManager = new XmlNamespaceManager(doc.NameTable);
+            nsManager.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
+
+            var paragraphs = doc.SelectNodes("//w:sdt[w:*]", nsManager);
+
+            if (paragraphs != null)
+            {
+                foreach (XmlNode node in paragraphs)
+                {
+                    TestXmlTree test = new TestXmlTree();
+
+                    XmlNode? sdtPr = node.SelectSingleNode("w:sdtPr", nsManager);
+                    if (sdtPr != null)
+                    {
+                        var alias = sdtPr.SelectSingleNode("w:alias", nsManager);
+                        test.Alias = alias?.Attributes?["w:val"]?.Value;
+
+                        var tag = sdtPr.SelectSingleNode("w:tag", nsManager);
+                        test.Tag = tag?.Attributes?["w:val"]?.Value;
+                    }
+
+                    XmlNode? sdtContent = node.SelectSingleNode("w:sdtContent", nsManager);
+                    if (sdtContent != null)
+                    {
+                        var textNode = sdtContent.SelectSingleNode(".//w:t", nsManager);
+                        test.Text = textNode?.InnerText;
+                    }
+
+                    testList.Add(test);
+                }
+            }
+
+            return testList;
         }
 
         public void WriteXmlTree(string Tag, string Value)
