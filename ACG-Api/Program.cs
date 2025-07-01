@@ -74,6 +74,8 @@ builder.Services.AddTransient<Func<string, XPath>>(provider => path => new XPath
 builder.Services.AddTransient<SubleseTovDog>();
 builder.Services.AddTransient<SubleaseTovTermination>();
 builder.Services.AddTransient<SubleaseFopDogAct>();
+builder.Services.AddTransient<SubleaseFopReturnAct>();
+builder.Services.AddTransient<SubleaseFopTermination>();
 //CORS
 //builder.Services.AddCors(options =>
 //{
