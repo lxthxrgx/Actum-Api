@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ACG_Api.model.DTO
+namespace ACG_Api.model.DTO.SubleaseWord.Tov
 {
     public class DTOSubleaseTovDog
     {

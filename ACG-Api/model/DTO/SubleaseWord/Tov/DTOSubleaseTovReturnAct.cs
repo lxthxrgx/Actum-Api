@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ACG_Api.model.DTO
+namespace ACG_Api.model.DTO.SubleaseWord.Tov
 {
-    public class DTOSubleaseTermination
+    public class DTOSubleaseTovreturnACt
     {
         public int NumberGroup {get; set;}
         public string NameGroup {get; set;} = "NameGroup";
@@ -17,7 +17,6 @@ namespace ACG_Api.model.DTO
         public string addressSublessor {get; set;} = "addressSublessor";
         public string PipDirector {get; set;} = "PipDirector";
         public string PipsDirector {get; set;} = "PipsDirector";
-        public DateTime EndContractData {get; set;}
         public float RoomArea {get; set;}
         public string RoomAreaText {get; set;} = "RoomAreaText";
         public string RoomAreaAddress {get; set;} = "RoomAreaAddress";

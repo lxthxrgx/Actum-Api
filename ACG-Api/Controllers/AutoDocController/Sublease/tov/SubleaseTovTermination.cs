@@ -2,7 +2,7 @@ using ACG_Api.model.XPath;
 using Microsoft.AspNetCore.Mvc;
 using ACG_Api.service.AutoDocService;
 using System.Text.Json;
-using ACG_Api.model.DTO;
+using ACG_Api.model.DTO.SubleaseWord.Tov;
 
 namespace ACG_Api.Controllers.AutoDocController.tov
 {

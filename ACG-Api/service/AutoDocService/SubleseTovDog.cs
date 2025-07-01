@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ACG_Api.model.DTO;
+using ACG_Api.model.DTO.SubleaseWord.Tov;
 using ACG_Api.model.XPath;
 
 namespace ACG_Api.service.AutoDocService

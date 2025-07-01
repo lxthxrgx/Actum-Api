@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ACG_Api.model.XPath;
-using ACG_Api.model.DTO;
+using ACG_Api.model.DTO.SubleaseWord.Tov;
 
 namespace ACG_Api.service.AutoDocService
 {
