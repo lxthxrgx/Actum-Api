@@ -3,6 +3,7 @@ using ACG_Api.Database;
 using ACG_Api.service;
 using ACG_Api.model.XPath;
 using ACG_Api.service.AutoDocService;
+using Microsoft.Extensions.Options;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -68,14 +69,23 @@ builder.Services.AddDbContext<DatabaseModel>(options =>
 //        .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
 //});
 
+//PATH TO FOLDER FOR SAVE AGREEMENTS
+builder.Services.Configure<PathSettings>(
+    builder.Configuration.GetSection("PathToSaveAgreements"));
+
 //Denpendency Injections
 builder.Services.AddScoped<GuardService>();
-builder.Services.AddTransient<Func<string, XPath>>(provider => path => new XPath(path));
+builder.Services.AddTransient<Func<string, XPath>>(provider =>
+{
+    var options = provider.GetRequiredService<IOptions<PathSettings>>();
+    return path => new XPath(path, options);
+});
 builder.Services.AddTransient<SubleseTovDog>();
 builder.Services.AddTransient<SubleaseTovTermination>();
 builder.Services.AddTransient<SubleaseFopDogAct>();
 builder.Services.AddTransient<SubleaseFopReturnAct>();
 builder.Services.AddTransient<SubleaseFopTermination>();
+
 //CORS
 //builder.Services.AddCors(options =>
 //{

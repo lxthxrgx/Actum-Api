@@ -2,25 +2,31 @@ using System.IO.Compression;
 using System.Text;
 using System.Xml;
 using ACG_Api.model.Test;
+using Microsoft.Extensions.Options;
 
 namespace ACG_Api.model.XPath
 {
+    public class PathSettings
+    {
+        public string PathToFolder { get; set; } = "";
+    }
     public class XPath
     {
-        // const string original = "/home/ltx/Documents/Sublease.docx";
-        string output = "/home/ltx/Documents/";
-
-        // string original = "C:\\Users\\wetqw\\Desktop\\Sublease.docx";
-        // string output = "C:\\Users\\wetqw\\Desktop\\Test.docx";
-
+        private readonly string _filePath;
         private XmlDocument doc;
         private XmlNamespaceManager nsManager;
-        private string _pathToTemplate;
+        private readonly string _pathToTemplate;
 
         public XPath(string pathToTemplate)
         {
             _pathToTemplate = pathToTemplate;
             string dataXml = DocxToXml(_pathToTemplate);
+
+              var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+            _filePath = config["PathToSaveAgreements:PathToFolder"] ?? " ";
 
             doc = new XmlDocument();
             doc.LoadXml(dataXml);
@@ -181,7 +187,7 @@ namespace ACG_Api.model.XPath
                 updatedXml = stringWriter.ToString();
             }
 
-            SaveXmlToDocx(_pathToTemplate, updatedXml, output + nameFile + ".docx");
+            SaveXmlToDocx(_pathToTemplate, updatedXml, _filePath + nameFile + ".docx");
         }
 
         public class Utf8StringWriter : StringWriter
