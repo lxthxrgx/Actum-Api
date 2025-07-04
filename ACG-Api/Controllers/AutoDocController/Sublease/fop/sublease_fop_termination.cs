@@ -3,6 +3,7 @@ using ACG_Api.model.DTO.SubleaseWord.Fop;
 using ACG_Api.service.AutoDocService;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using ACG_Api.components.ILogger;
 
 namespace ACG_Api.Controllers.AutoDocController.Sublease.fop
 {
@@ -31,8 +32,7 @@ namespace ACG_Api.Controllers.AutoDocController.Sublease.fop
         [HttpPost("create")]
         public string GetTestXmlTree([FromBody]DTOSubleaseFopTermination data)
         {
-            var json = JsonSerializer.Serialize(data, _jsonOptions);
-            _logger.LogInformation("User data: {UserData}", json);
+            _logger.LogInformation("User data: {UserData}", JsonUTF8.JsonOptions(data));
             try
             {
                 _SubFopTerm.SubleaseFopTerminationCreate(data);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ACG_Api.service.AutoDocService;
 using System.Text.Json;
 using ACG_Api.model.DTO.SubleaseWord.Tov;
+using ACG_Api.components.ILogger;
 
 namespace ACG_Api.Controllers.AutoDocController.tov
 {
@@ -19,17 +20,10 @@ namespace ACG_Api.Controllers.AutoDocController.tov
             _SubTovReturn = SubTovReturn;
         }
 
-        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
-        {
-            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-            WriteIndented = false
-        };
-
         [HttpPost("create")]
         public string GetTestXmlTree([FromBody]DTOSubleaseTovreturnACt data)
         {
-            var json = JsonSerializer.Serialize(data, _jsonOptions);
-            _logger.LogInformation("User data SubtovTerm: {UserData}", json);
+            _logger.LogInformation("User data SubtovTerm: {UserData}", JsonUTF8.JsonOptions(data));
             try
             {
                 _SubTovReturn.SubleaseTovReturnActCreate(data);
