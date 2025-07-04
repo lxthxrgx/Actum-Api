@@ -78,7 +78,7 @@ builder.Services.AddScoped<GuardService>();
 builder.Services.AddTransient<Func<string, XPath>>(provider =>
 {
     var options = provider.GetRequiredService<IOptions<PathSettings>>();
-    return path => new XPath(path, options);
+    return path => new XPath(path);
 });
 builder.Services.AddTransient<SubleseTovDog>();
 builder.Services.AddTransient<SubleaseTovTermination>();
