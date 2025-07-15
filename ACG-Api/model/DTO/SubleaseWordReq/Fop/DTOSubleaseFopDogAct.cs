@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ACG_Api.model.DTO.SubleaseWord.Fop
+namespace ACG_Api.model.DTO.SubleaseWordReq.Fop
 {
     public class DTOSubleaseFopDogAct
     {

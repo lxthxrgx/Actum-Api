@@ -10,14 +10,14 @@ namespace ACG_Api.model.XPath
     {
         public string PathToFolder { get; set; } = "";
     }
-    public class XPath
+    public class XPathProcessor
     {
         private readonly string _filePath;
         private XmlDocument doc;
         private XmlNamespaceManager nsManager;
         private readonly string _pathToTemplate;
 
-        public XPath(string pathToTemplate)
+        public XPathProcessor(string pathToTemplate)
         {
             _pathToTemplate = pathToTemplate;
             string dataXml = DocxToXml(_pathToTemplate);
@@ -51,7 +51,7 @@ namespace ACG_Api.model.XPath
 
         public void GetXmlTree()
         {
-            XPath xPath = new (_pathToTemplate);
+            XPathProcessor xPath = new (_pathToTemplate);
 
             string dataXml = xPath.DocxToXml(_pathToTemplate);
 
@@ -102,7 +102,7 @@ namespace ACG_Api.model.XPath
         {
             var testList = new List<TestXmlTree>();
 
-            XPath xPath = new XPath(_pathToTemplate);
+            XPathProcessor xPath = new XPathProcessor(_pathToTemplate);
             string dataXml = xPath.DocxToXml(_pathToTemplate);
 
             XmlDocument doc = new XmlDocument();

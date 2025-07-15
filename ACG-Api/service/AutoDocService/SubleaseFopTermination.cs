@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ACG_Api.model.DTO.SubleaseWord.Fop;
+using ACG_Api.model.DTO.SubleaseWordReq.Fop;
 using ACG_Api.model.XPath;
 
 namespace ACG_Api.service.AutoDocService
@@ -11,7 +11,7 @@ namespace ACG_Api.service.AutoDocService
     {
         public void SubleaseFopTerminationCreate(DTOSubleaseFopTermination subleaseData)
         {
-            XPath xpathSublease = new XPath("/home/ltx/Documents/Sublease-Fop/TerminationContractFop.docx");
+            XPathProcessor xpathSublease = new XPathProcessor("/home/ltx/Documents/Sublease-Fop/TerminationContractFop.docx");
             xpathSublease.WriteXmlTree("ContractNumber", subleaseData.ContractNumber);
             xpathSublease.WriteXmlTree("CreationContractDate", subleaseData.CreationContractDate.ToString("dd.MM.yyyy"));
             xpathSublease.WriteXmlTree("CreationDate", subleaseData.CreationDate.ToString("dd.MM.yyyy"));

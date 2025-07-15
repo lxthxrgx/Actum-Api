@@ -75,10 +75,10 @@ builder.Services.Configure<PathSettings>(
 
 //Denpendency Injections
 builder.Services.AddScoped<GuardService>();
-builder.Services.AddTransient<Func<string, XPath>>(provider =>
+builder.Services.AddTransient<Func<string, XPathProcessor>>(provider =>
 {
     var options = provider.GetRequiredService<IOptions<PathSettings>>();
-    return path => new XPath(path);
+    return path => new XPathProcessor(path);
 });
 builder.Services.AddTransient<SubleseTovDog>();
 builder.Services.AddTransient<SubleaseTovTermination>();

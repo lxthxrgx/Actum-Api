@@ -1,5 +1,5 @@
 using ACG_Api.model.XPath;
-using ACG_Api.model.DTO.SubleaseWord.Fop;
+using ACG_Api.model.DTO.SubleaseWordReq.Fop;
 using ACG_Api.service.AutoDocService;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +11,11 @@ namespace ACG_Api.Controllers.AutoDocController.Sublease.fop
     [Route("api/[controller]")]
     public class sublease_fop_termination : ControllerBase
     {
-        private readonly Func<string, XPath> _xPathFactory;
+        private readonly Func<string, XPathProcessor> _xPathFactory;
         private readonly SubleaseFopTermination _SubFopTerm;
         private readonly ILogger<sublease_fop_termination> _logger;
 
-        public sublease_fop_termination(Func<string, XPath> xPathFactory, SubleaseFopTermination SubFopTerm, ILogger<sublease_fop_termination> logger)
+        public sublease_fop_termination(Func<string, XPathProcessor> xPathFactory, SubleaseFopTermination SubFopTerm, ILogger<sublease_fop_termination> logger)
         {
             _logger = logger;
             _xPathFactory = xPathFactory;

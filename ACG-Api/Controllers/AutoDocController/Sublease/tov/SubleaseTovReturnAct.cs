@@ -2,7 +2,7 @@ using ACG_Api.model.XPath;
 using Microsoft.AspNetCore.Mvc;
 using ACG_Api.service.AutoDocService;
 using System.Text.Json;
-using ACG_Api.model.DTO.SubleaseWord.Tov;
+using ACG_Api.model.DTO.SubleaseWordReq.Tov;
 using ACG_Api.components.ILogger;
 
 namespace ACG_Api.Controllers.AutoDocController.tov
@@ -11,10 +11,10 @@ namespace ACG_Api.Controllers.AutoDocController.tov
     [Route("api/[controller]")]
     public class sublease_tov_return_act : ControllerBase
     {
-        private readonly Func<string, XPath> _xPathFactory;
+        private readonly Func<string, XPathProcessor> _xPathFactory;
         private readonly SubleaseTovReturnAct _SubTovReturn;
         private readonly ILogger<sublease_tov_return_act> _logger;
-        public sublease_tov_return_act(Func<string, XPath> xPathFactory, SubleaseTovReturnAct SubTovReturn, ILogger<sublease_tov_return_act> logger){
+        public sublease_tov_return_act(Func<string, XPathProcessor> xPathFactory, SubleaseTovReturnAct SubTovReturn, ILogger<sublease_tov_return_act> logger){
             _logger = logger;
             _xPathFactory = xPathFactory;
             _SubTovReturn = SubTovReturn;

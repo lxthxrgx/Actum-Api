@@ -2,7 +2,7 @@ using ACG_Api.model.XPath;
 using Microsoft.AspNetCore.Mvc;
 using ACG_Api.service.AutoDocService;
 using System.Text.Json;
-using ACG_Api.model.DTO.SubleaseWord.Fop;
+using ACG_Api.model.DTO.SubleaseWordReq.Fop;
 using ACG_Api.components.ILogger;
 
 namespace ACG_Api.Controllers.AutoDocController.Sublease.fop
@@ -11,10 +11,10 @@ namespace ACG_Api.Controllers.AutoDocController.Sublease.fop
     [Route("api/[controller]")]
     public class sublease_fop_return_act : ControllerBase
     {
-        private readonly Func<string, XPath> _xPathFactory;
+        private readonly Func<string, XPathProcessor> _xPathFactory;
         private readonly SubleaseFopReturnAct _SubFopReturn;
         private readonly ILogger<sublease_fop_return_act> _logger;
-        public sublease_fop_return_act(Func<string, XPath> xPathFactory, SubleaseFopReturnAct SubFopReturn, ILogger<sublease_fop_return_act> logger){
+        public sublease_fop_return_act(Func<string, XPathProcessor> xPathFactory, SubleaseFopReturnAct SubFopReturn, ILogger<sublease_fop_return_act> logger){
             _logger = logger;
             _xPathFactory = xPathFactory;
             _SubFopReturn = SubFopReturn;
