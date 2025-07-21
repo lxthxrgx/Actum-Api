@@ -1,6 +1,8 @@
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using ACG_Api.model.Test;
 using Microsoft.Extensions.Options;
 
@@ -95,6 +97,49 @@ namespace ACG_Api.model.XPath
                     }
                 }
 
+            }
+        }
+
+        public void TestXmlTreeLinq()
+        {
+            XPathProcessor xPath = new(_pathToTemplate);
+
+            string dataXml = xPath.DocxToXml(_pathToTemplate);
+
+            XDocument doc = XDocument.Parse(dataXml);
+
+            XNamespace w = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+
+            var sdtElements = doc.Descendants(w + "sdt");
+
+            var results = sdtElements
+                .Where(sdt => sdt.Elements(w + "sdtPr").Any())
+                .Select(sdt =>
+                {
+                    var sdtPr = sdt.Element(w + "sdtPr");
+                    var alias = sdtPr?.Element(w + "alias")?.Attribute(w + "val")?.Value;
+                    var tag = sdtPr?.Element(w + "tag")?.Attribute(w + "val")?.Value;
+
+                    var contentText = sdt
+                        .Element(w + "sdtContent")?
+                        .Descendants(w + "t")
+                        .Select(t => t.Value)
+                        .Aggregate(string.Empty, (a, b) => a + b);
+
+                    return new
+                    {
+                        Alias = alias,
+                        Tag = tag,
+                        Text = contentText
+                    };
+                });
+
+            foreach (var item in results)
+            {
+                Console.WriteLine($"Alias: {item.Alias}");
+                Console.WriteLine($"Tag: {item.Tag}");
+                Console.WriteLine($"Text: {item.Text}");
+                Console.WriteLine("-----");
             }
         }
 
