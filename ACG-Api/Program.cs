@@ -4,6 +4,7 @@ using ACG_Api.service;
 using ACG_Api.model.XPath;
 using ACG_Api.service.AutoDocService;
 using Microsoft.Extensions.Options;
+using ACG_Api.config;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -73,6 +74,9 @@ builder.Services.AddDbContext<DatabaseModel>(options =>
 builder.Services.Configure<PathSettings>(
     builder.Configuration.GetSection("PathToSaveAgreements"));
 
+//FOR USING SETTINGS FROM APPSETTINGS.JSON
+ConfigHelper.Configuration = builder.Configuration;
+
 //Denpendency Injections
 builder.Services.AddScoped<GuardService>();
 builder.Services.AddTransient<Func<string, XPathProcessor>>(provider =>
@@ -85,6 +89,7 @@ builder.Services.AddTransient<SubleaseTovTermination>();
 builder.Services.AddTransient<SubleaseFopDogAct>();
 builder.Services.AddTransient<SubleaseFopReturnAct>();
 builder.Services.AddTransient<SubleaseFopTermination>();
+builder.Services.AddTransient<SubleaseTovReturnAct>();
 
 //CORS
 //builder.Services.AddCors(options =>

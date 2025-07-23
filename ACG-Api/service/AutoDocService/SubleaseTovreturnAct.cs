@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ACG_Api.model.XPath;
 using ACG_Api.model.DTO.SubleaseWordReq.Tov;
+using ACG_Api.config;
 
 namespace ACG_Api.service.AutoDocService
 {
@@ -11,7 +12,7 @@ namespace ACG_Api.service.AutoDocService
     {
         public void SubleaseTovReturnActCreate(DTOSubleaseTovreturnACt subleaseData)
         {
-            XPathProcessor xpathSublease = new XPathProcessor("/home/ltx/Documents/ReturnAct.docx");
+            XPathProcessor xpathSublease = new XPathProcessor(ConfigHelper.Configuration["PathToTemplates:SubleaseTovReturnAct"]);
             xpathSublease.WriteXmlTree("ContractNumber", subleaseData.ContractNumber);
             xpathSublease.WriteXmlTree("CreationContractDate", subleaseData.CreationContractDate.ToString("dd.MM.yyyy"));
             xpathSublease.WriteXmlTree("CreationDate", subleaseData.CreationDate.ToString("dd.MM.yyyy"));

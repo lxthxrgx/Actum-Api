@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using ACG_Api.model.DTO.SubleaseWordReq.Tov;
 using ACG_Api.model.XPath;
-
+using ACG_Api.config;
 namespace ACG_Api.service.AutoDocService
 {
     public class SubleseTovDog
     {
         public void SubleseTovDogWord(DTOSubleaseTovDog subleaseData)
         {
-            XPathProcessor xpathSublease = new XPathProcessor("/home/ltx/Documents/Sublease.docx");
+            XPathProcessor xpathSublease = new XPathProcessor(ConfigHelper.Configuration["PathToTemplates:SubleaseTovDog"]);
             xpathSublease.WriteXmlTree("ContractNumber", subleaseData.ContractNumber);
             xpathSublease.WriteXmlTree("CreationDate", subleaseData.CreationDate.ToString("dd.MM.yyyy"));
             xpathSublease.WriteXmlTree("PipSublessor", subleaseData.PipSublessor);
@@ -33,7 +33,7 @@ namespace ACG_Api.service.AutoDocService
             
             xpathSublease.Save($"{subleaseData.NumberGroup} - {subleaseData.NameGroup} - договір");
 
-            XPathProcessor xpathSublease2 = new XPathProcessor("/home/ltx/Documents/Sublease2.docx");
+            XPathProcessor xpathSublease2 = new XPathProcessor(ConfigHelper.Configuration["PathToTemplates:SubleaseTovAct"]);
             xpathSublease2.WriteXmlTree("CreationDate", subleaseData.CreationDate.ToString("dd.MM.yyyy"));
             xpathSublease2.WriteXmlTree("PipSublessor", subleaseData.PipSublessor);
             xpathSublease2.WriteXmlTree("rnokppSublessor", subleaseData.rnokppSublessor);
