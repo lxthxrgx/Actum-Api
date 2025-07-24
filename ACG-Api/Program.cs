@@ -108,7 +108,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173","http://localhost:3000" )
+                          policy.WithOrigins("http://localhost:5173","http://localhost:3000", "http://10.10.110.105:3000")
                                 .AllowAnyHeader()  // Разрешить любые заголовки
                                 .AllowAnyMethod()  // Разрешить любые методы (GET, POST, PUT, DELETE)
                                 .AllowCredentials(); // При необходимости можно разрешить отправку учетных данных (например, куки)
