@@ -1,0 +1,6 @@
+@DocGenAPI_HostAddress = http://localhost:5217
+
+GET {{DocGenAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

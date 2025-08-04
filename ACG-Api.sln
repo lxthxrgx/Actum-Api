@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACG-Api", "ACG-Api\ACG-Api.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACG-NUnitTest", "ACG-NUnitTest\ACG-NUnitTest.csproj", "{D3B6A4C2-8F2B-4C1D-839B-ACF8E4D11B3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocGenAPI", "DocGenAPI\DocGenAPI.csproj", "{ED2D641B-0E42-420E-B30B-7DD5826025AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{00542E88-712B-4322-8941-321A846435CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{D3B6A4C2-8F2B-4C1D-839B-ACF8E4D11B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3B6A4C2-8F2B-4C1D-839B-ACF8E4D11B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3B6A4C2-8F2B-4C1D-839B-ACF8E4D11B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED2D641B-0E42-420E-B30B-7DD5826025AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED2D641B-0E42-420E-B30B-7DD5826025AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED2D641B-0E42-420E-B30B-7DD5826025AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED2D641B-0E42-420E-B30B-7DD5826025AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00542E88-712B-4322-8941-321A846435CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00542E88-712B-4322-8941-321A846435CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00542E88-712B-4322-8941-321A846435CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00542E88-712B-4322-8941-321A846435CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
