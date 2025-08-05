@@ -1,9 +1,11 @@
+using Models.model.counterparty;
+using Models.model.guard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Models
+namespace Models.model.groups
 {
     public class Groups
     {
@@ -12,7 +14,7 @@ namespace Models
         public string NameGroup { get; private set; } = "NameGroup";
         public string Address { get; private set; } = "Адреса";
         public double? Area { get; private set; } = 1.0;
-        public bool? isAlert { get; private set; } = false;
+        public bool isAlert { get; private set; } = false;
         public DateTime? DateCloseDepartment { get; private set; } = DateTime.MinValue;
         public ICollection<Counterparty> Counterparty { get; private set; } = new List<Counterparty>();
         public ICollection<Guard> Guard { get; private set; } = new List<Guard>();
