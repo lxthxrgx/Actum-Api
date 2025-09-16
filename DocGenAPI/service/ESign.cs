@@ -16,10 +16,9 @@ public class ESign
 
         byte[] signature = signedCms.Encode();
 
-        // --- Проверка подписи ---
         var signedCmsCheck = new SignedCms(content, detached: true);
         signedCmsCheck.Decode(signature);
-        signedCmsCheck.CheckSignature(true); // true = проверять по цепочке сертификатов
+        signedCmsCheck.CheckSignature(true);
 
         Console.WriteLine("✅ Подпись успешно создана и проверена.");
 

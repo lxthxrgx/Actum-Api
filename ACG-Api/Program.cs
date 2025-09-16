@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using ACG_Api.Database;
 using ACG_Api.service;
 using ACG_Api.model.XPath;
 using ACG_Api.service.AutoDocService;
@@ -18,14 +17,14 @@ builder.Services.AddSwaggerGen();
 
 //EF CORE CONNECTON
 
-builder.Services.AddDbContext<DatabaseModel>(options =>
-{
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-    options.EnableSensitiveDataLogging(false);
-    options.UseLoggerFactory(LoggerFactory.Create(builder => builder
-        .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
-        .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
-});
+// builder.Services.AddDbContext<DatabaseModel>(options =>
+// {
+//     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+//     options.EnableSensitiveDataLogging(false);
+//     options.UseLoggerFactory(LoggerFactory.Create(builder => builder
+//         .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
+//         .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
+// });
 
 // builder.Services.AddDbContext<NewDatabaseModel>(options =>
 // {
@@ -78,7 +77,8 @@ builder.Services.Configure<PathSettings>(
 ConfigHelper.Configuration = builder.Configuration;
 
 //Denpendency Injections
-builder.Services.AddScoped<GuardService>();
+// builder.Services.AddScoped<GuardService>();
+builder.Services.AddScoped<CheckFolder>();
 builder.Services.AddTransient<Func<string, XPathProcessor>>(provider =>
 {
     var options = provider.GetRequiredService<IOptions<PathSettings>>();

@@ -1,13 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ACG_Api.model;
-using ACG_Api.Database;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using System.Reflection;
 using ACG_Api.model.XPath;
-using ACG_Api.model.DTO;
-using ACG_Api.service.AutoDocService;
-using System.Text.Json;
 
 namespace ACG_Api.Controllers
 {
@@ -16,12 +8,18 @@ namespace ACG_Api.Controllers
 
     public class Ping : ControllerBase
     {
-        public Ping(){}
+        public Ping() { }
 
         [HttpGet]
         public string Get()
         {
             return "Pong";
+        }
+
+        [HttpGet("GetNumInName")]
+        public void GetNumInName(){
+            CheckFolder checkFolder = new CheckFolder();
+            checkFolder.CheckFiles("/home/ltx/Documents/DOCX-Work/1test.docx");
         }
     }
 }
