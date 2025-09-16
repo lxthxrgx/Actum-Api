@@ -10,11 +10,11 @@ namespace Models.model.guard
     {
          public int Id { get; private set; }
         public int GroupId { get; private set; }
-        public Groups GroupTable {get; private set; }
-        public string address { get; private set; }
-        public string OhronnaComp { get; private set; }
-        public string NumDog { get; private set; }
-        public string NumDog2 { get; private set; }
+        public Groups GroupTable { get; private set; } = new Groups();
+        public string Address { get; private set; } = "Address";
+        public string OhronnaComp { get; private set; } = "OhronnaComp";
+        public string NumDog { get; private set; } = "NumDog";
+        public string NumDog2 { get; private set; } = "NumDog2";
         public DateTime StrokDii { get; private set; }
         public DateTime? StrokDii2 { get; private set; }
         public string? ResPerson { get; private set; }

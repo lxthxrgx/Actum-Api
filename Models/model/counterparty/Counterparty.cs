@@ -13,15 +13,23 @@ namespace Models.model.counterparty
         public required Groups GroupTable { get; set; }
 
         public string Fullname { get; private set; } = "Fullname";
-        public  string ShortName {get; private set; }
-        public  string Address {get; private set; }
-        public  string Edryofop {get; private set; }
-        public  string BanckAccount {get; private set; }
-        public  string Director {get; private set; }
-        public  string ShortNameDirector {get; private set; }
-        public  string ResPerson {get; private set; }
-        public  string Phone {get; private set;}
-        public  string Email {get; private set; }
-        public  string Status {get; private set; }
+        public  string ShortName {get; private set; } = "ShortName";
+        public  string Address {get; private set; } = "Address";
+        public  string BanckAccount {get; private set; } = "BanckAccount";
+        public  string Director {get; private set; } = "Director";
+        public  string ShortNameDirector {get; private set; } = "ShortNameDirector";
+        public  string ResPerson {get; private set; } = "ResPerson";
+        public  string Phone {get; private set;} = "Phone";
+        public  string Email {get; private set; } = "Email";
+        public  string Status {get; private set; } = "Status";
+    }
+
+    public class CounterpartyFop : Counterparty
+    {
+        public  string Edryofop {get; private set; } = "Edryofop";
+    }
+        public class CounterpartyLLC : Counterparty
+    {
+        public  string Rnokpp {get; private set; } = "Rnokpp";
     }
 }
