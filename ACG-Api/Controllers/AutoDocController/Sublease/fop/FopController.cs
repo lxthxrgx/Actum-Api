@@ -9,7 +9,7 @@ namespace ACG_Api.Controllers.AutoDocController.Sublease.fop
 {
     [ApiController]
     [Route("api/sublease/[controller]")]
-    public class Fop : ControllerBase
+    public class AutoDocFop : ControllerBase
     {
         private readonly Func<string, XPathProcessor> _xPathFactory;
 
@@ -17,14 +17,14 @@ namespace ACG_Api.Controllers.AutoDocController.Sublease.fop
         private readonly SubleaseFopTermination _SubFopTerm;
         private readonly SubleaseFopDogAct _SubFopDog;
 
-        private readonly ILogger<Fop> _logger;
-        public Fop
+        private readonly ILogger<AutoDocFop> _logger;
+        public AutoDocFop
         (
         Func<string, XPathProcessor> xPathFactory,
         SubleaseFopReturnAct SubFopReturn,
         SubleaseFopTermination SubFopTerm,
         SubleaseFopDogAct subFopDog,
-        ILogger<Fop> logger
+        ILogger<AutoDocFop> logger
         )
         {
             _logger = logger;
