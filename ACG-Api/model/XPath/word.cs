@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using ACG_Api.model.Test;
-using Microsoft.Extensions.Options;
+using System.Text.RegularExpressions;
 
 namespace ACG_Api.model.XPath
 {
@@ -24,9 +24,9 @@ namespace ACG_Api.model.XPath
             _pathToTemplate = pathToTemplate;
             string dataXml = DocxToXml(_pathToTemplate);
 
-              var config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .Build();
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
 
             _filePath = config["PathToSaveAgreements:PathToFolder"] ?? " ";
 
@@ -233,6 +233,8 @@ namespace ACG_Api.model.XPath
             }
 
             SaveXmlToDocx(_pathToTemplate, updatedXml, _filePath + nameFile + ".docx");
+
+
         }
 
         public class Utf8StringWriter : StringWriter
@@ -250,9 +252,56 @@ namespace ACG_Api.model.XPath
             }
         }
 
+        public int CheckName(string path)
+        {
+            string name = Path.GetFileNameWithoutExtension(path);
+            var match = Regex.Match(name, @"_(\d+)$");
+            if (match.Success)
+            {
+                return int.Parse(match.Groups[1].Value);
+            }
+            return 0;
+        }
+
+        public string SetNumInName(int num, string path)
+        {
+            string directory = Path.GetDirectoryName(path);
+            string filename = Path.GetFileNameWithoutExtension(path);
+            string extension = Path.GetExtension(path);
+
+            string baseName = Regex.Replace(filename, @"_(\d+)$", ""); // убираем старый номер если есть
+            string newFileName = $"{baseName}_{num}{extension}";
+
+            return Path.Combine(directory, newFileName);
+        }
+
+        public string CheckFiles(string path)
+        {
+            if (!File.Exists(path))
+            {
+                return path;
+            }
+
+            int number = CheckName(path);
+            if (number == 0)
+                number = 1;
+            else
+                number++;
+
+            string newPath = SetNumInName(number, path);
+            while (File.Exists(newPath))
+            {
+                number++;
+                newPath = SetNumInName(number, path);
+            }
+
+            return newPath;
+        }
+
         public void SaveXmlToDocx(string originalDocxPath, string modifiedXml, string outputDocxPath)
         {
-            using (FileStream fs = new FileStream(outputDocxPath, FileMode.Create))
+            string File = CheckFiles(outputDocxPath);
+            using (FileStream fs = new FileStream(File, FileMode.Create))
             using (ZipArchive originalArchive = ZipFile.Open(originalDocxPath, ZipArchiveMode.Read))
             using (ZipArchive newArchive = new ZipArchive(fs, ZipArchiveMode.Create))
             {

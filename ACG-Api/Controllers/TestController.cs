@@ -15,11 +15,5 @@ namespace ACG_Api.Controllers
         {
             return "Pong";
         }
-
-        [HttpGet("GetNumInName")]
-        public void GetNumInName(){
-            CheckFolder checkFolder = new CheckFolder();
-            checkFolder.CheckFiles("/home/ltx/Documents/DOCX-Work/1test.docx");
-        }
     }
 }

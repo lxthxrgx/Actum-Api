@@ -78,7 +78,7 @@ ConfigHelper.Configuration = builder.Configuration;
 
 //Denpendency Injections
 // builder.Services.AddScoped<GuardService>();
-builder.Services.AddScoped<CheckFolder>();
+
 builder.Services.AddTransient<Func<string, XPathProcessor>>(provider =>
 {
     var options = provider.GetRequiredService<IOptions<PathSettings>>();

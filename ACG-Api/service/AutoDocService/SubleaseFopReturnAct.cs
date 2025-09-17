@@ -27,6 +27,7 @@ namespace ACG_Api.service.AutoDocService
             xpathSublease.WriteXmlTree("RoomAreaText", subleaseData.RoomAreaText);
             xpathSublease.WriteXmlTree("RoomAreaAddress", subleaseData.RoomAreaAddress);
             xpathSublease.WriteXmlTree("BanckAccount", subleaseData.BanckAccount);
+
             xpathSublease.Save($"{subleaseData.NumberGroup}-{subleaseData.NameGroup}-повернення");
         }
     }
