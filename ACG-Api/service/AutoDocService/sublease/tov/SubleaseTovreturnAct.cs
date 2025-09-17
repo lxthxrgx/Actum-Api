@@ -6,7 +6,7 @@ using ACG_Api.model.XPath;
 using ACG_Api.model.DTO.SubleaseWordReq.Tov;
 using ACG_Api.config;
 
-namespace ACG_Api.service.AutoDocService
+namespace ACG_Api.service.AutoDocService.sublease.tov
 {
     public class SubleaseTovReturnAct
     {
