@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using ACG_Api.model.Test;
 using System.Text.RegularExpressions;
 
 namespace ACG_Api.model.XPath
@@ -18,6 +17,8 @@ namespace ACG_Api.model.XPath
         private XmlDocument doc;
         private XmlNamespaceManager nsManager;
         private readonly string _pathToTemplate;
+
+        public XPathProcessor(){}
 
         public XPathProcessor(string pathToTemplate)
         {
@@ -39,17 +40,26 @@ namespace ACG_Api.model.XPath
 
         public string ExtractXml(string pathToDocx)
         {
-            using (ZipArchive archive = ZipFile.OpenRead(pathToDocx))
+            try
             {
-                var entry = archive.GetEntry("word/document.xml");
-                if (entry == null) throw new Exception("word/document.xml not found!");
-
-                using (var reader = new StreamReader(entry.Open()))
+                using (var archive = ZipFile.OpenRead(pathToDocx))
                 {
-                    return reader.ReadToEnd();
+                    var entry = archive.GetEntry("word/document.xml");
+                    if (entry == null)
+                        throw new Exception($"word file is empty or broken: {pathToDocx}");
+
+                    using (var reader = new StreamReader(entry.Open()))
+                    {
+                        return reader.ReadToEnd();
+                    }
                 }
             }
+            catch (InvalidDataException)
+            {
+                throw new Exception($"word file is empty or broken: {pathToDocx}");
+            }
         }
+
 
         public void GetXmlTree()
         {
@@ -139,11 +149,11 @@ namespace ACG_Api.model.XPath
         {
             if (File.Exists(path))
             {
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
 
@@ -167,13 +177,12 @@ namespace ACG_Api.model.XPath
             string baseName = Regex.Replace(filename, @"_(\d+)$", "");
             string newFileName = $"{baseName}_{num}{extension}";
 
-            return Path.Combine(directory, newFileName);
+            return $"{directory}\\{newFileName}";
         }
 
         public string GenerateDocxFileName(string path)
         {
             bool is_createdErlier = isCreatedErlier(path);
-
             if (is_createdErlier == true)
                 return path;
 

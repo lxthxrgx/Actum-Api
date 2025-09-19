@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\AutoDocController\GetTree\" />
     <Folder Include="Controllers\AutoDocController\Rent\fop\" />
     <Folder Include="Controllers\AutoDocController\Rent\tov\" />
     <Folder Include="Controllers\Groups\" />
