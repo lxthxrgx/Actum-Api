@@ -12,7 +12,7 @@ namespace ACG_Api.model.XPath
     {
         public string PathToFolder { get; set; } = "";
     }
-    public class XPathProcessor
+    public class XPathProcessor : IFile, IXMLParser, IDocxService, IDocxFileNameService
     {
         private readonly string _filePath;
         private XmlDocument doc;
@@ -22,7 +22,7 @@ namespace ACG_Api.model.XPath
         public XPathProcessor(string pathToTemplate)
         {
             _pathToTemplate = pathToTemplate;
-            string dataXml = DocxToXml(_pathToTemplate);
+            string dataXml = ExtractXml(_pathToTemplate);
 
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
@@ -37,7 +37,7 @@ namespace ACG_Api.model.XPath
             nsManager.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
         }
 
-        public string DocxToXml(string pathToDocx)
+        public string ExtractXml(string pathToDocx)
         {
             using (ZipArchive archive = ZipFile.OpenRead(pathToDocx))
             {
@@ -55,7 +55,7 @@ namespace ACG_Api.model.XPath
         {
             XPathProcessor xPath = new (_pathToTemplate);
 
-            string dataXml = xPath.DocxToXml(_pathToTemplate);
+            string dataXml = xPath.ExtractXml(_pathToTemplate);
 
             doc.Load(new StringReader(dataXml));
         
@@ -100,94 +100,6 @@ namespace ACG_Api.model.XPath
             }
         }
 
-        public void TestXmlTreeLinq()
-        {
-            XPathProcessor xPath = new(_pathToTemplate);
-
-            string dataXml = xPath.DocxToXml(_pathToTemplate);
-
-            XDocument doc = XDocument.Parse(dataXml);
-
-            XNamespace w = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
-
-            var sdtElements = doc.Descendants(w + "sdt");
-
-            var results = sdtElements
-                .Where(sdt => sdt.Elements(w + "sdtPr").Any())
-                .Select(sdt =>
-                {
-                    var sdtPr = sdt.Element(w + "sdtPr");
-                    var alias = sdtPr?.Element(w + "alias")?.Attribute(w + "val")?.Value;
-                    var tag = sdtPr?.Element(w + "tag")?.Attribute(w + "val")?.Value;
-
-                    var contentText = sdt
-                        .Element(w + "sdtContent")?
-                        .Descendants(w + "t")
-                        .Select(t => t.Value)
-                        .Aggregate(string.Empty, (a, b) => a + b);
-
-                    return new
-                    {
-                        Alias = alias,
-                        Tag = tag,
-                        Text = contentText
-                    };
-                });
-
-            foreach (var item in results)
-            {
-                Console.WriteLine($"Alias: {item.Alias}");
-                Console.WriteLine($"Tag: {item.Tag}");
-                Console.WriteLine($"Text: {item.Text}");
-                Console.WriteLine("-----");
-            }
-        }
-
-        public List<TestXmlTree> GetXmlTreeForTest()
-        {
-            var testList = new List<TestXmlTree>();
-
-            XPathProcessor xPath = new XPathProcessor(_pathToTemplate);
-            string dataXml = xPath.DocxToXml(_pathToTemplate);
-
-            XmlDocument doc = new XmlDocument();
-            doc.Load(new StringReader(dataXml));
-
-            XmlNamespaceManager nsManager = new XmlNamespaceManager(doc.NameTable);
-            nsManager.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
-
-            var paragraphs = doc.SelectNodes("//w:sdt[w:*]", nsManager);
-
-            if (paragraphs != null)
-            {
-                foreach (XmlNode node in paragraphs)
-                {
-                    TestXmlTree test = new TestXmlTree();
-
-                    XmlNode? sdtPr = node.SelectSingleNode("w:sdtPr", nsManager);
-                    if (sdtPr != null)
-                    {
-                        var alias = sdtPr.SelectSingleNode("w:alias", nsManager);
-                        test.Alias = alias?.Attributes?["w:val"]?.Value;
-
-                        var tag = sdtPr.SelectSingleNode("w:tag", nsManager);
-                        test.Tag = tag?.Attributes?["w:val"]?.Value;
-                    }
-
-                    XmlNode? sdtContent = node.SelectSingleNode("w:sdtContent", nsManager);
-                    if (sdtContent != null)
-                    {
-                        var textNode = sdtContent.SelectSingleNode(".//w:t", nsManager);
-                        test.Text = textNode?.InnerText;
-                    }
-
-                    testList.Add(test);
-                }
-            }
-
-            return testList;
-        }
-
         public void WriteXmlTree(string Tag, string Value)
         {
             var paragraphs = doc.SelectNodes("//w:sdt[w:*]", nsManager);
@@ -218,41 +130,24 @@ namespace ACG_Api.model.XPath
             }
         }
 
-        public void Save(string nameFile)
-        {
-            string updatedXml;
-            using (var stringWriter = new Utf8StringWriter())
-            using (var xmlWriter = XmlWriter.Create(stringWriter, new XmlWriterSettings
-            {
-                Indent = false,
-                Encoding = new UTF8Encoding(false)
-            }))
-            {
-                doc.Save(xmlWriter);
-                updatedXml = stringWriter.ToString();
-            }
-
-            SaveXmlToDocx(_pathToTemplate, updatedXml, _filePath + nameFile + ".docx");
-
-
-        }
-
         public class Utf8StringWriter : StringWriter
         {
             public override Encoding Encoding => new UTF8Encoding(false);
         }
 
-        public string GetModifiedXml(XmlDocument doc)
+        public bool isCreatedErlier(string path)
         {
-            using (var sw = new StringWriter())
-            using (var xw = XmlWriter.Create(sw, new XmlWriterSettings { Indent = true }))
+            if (File.Exists(path))
             {
-                doc.Save(xw);
-                return sw.ToString();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
-        public int CheckName(string path)
+        public int GetDocxFileNumber(string path)
         {
             string name = Path.GetFileNameWithoutExtension(path);
             var match = Regex.Match(name, @"_(\d+)$");
@@ -269,20 +164,21 @@ namespace ACG_Api.model.XPath
             string filename = Path.GetFileNameWithoutExtension(path);
             string extension = Path.GetExtension(path);
 
-            string baseName = Regex.Replace(filename, @"_(\d+)$", ""); // убираем старый номер если есть
+            string baseName = Regex.Replace(filename, @"_(\d+)$", "");
             string newFileName = $"{baseName}_{num}{extension}";
 
             return Path.Combine(directory, newFileName);
         }
 
-        public string CheckFiles(string path)
+        public string GenerateDocxFileName(string path)
         {
-            if (!File.Exists(path))
-            {
-                return path;
-            }
+            bool is_createdErlier = isCreatedErlier(path);
 
-            int number = CheckName(path);
+            if (is_createdErlier == true)
+                return path;
+
+            int number = GetDocxFileNumber(path);
+
             if (number == 0)
                 number = 1;
             else
@@ -298,9 +194,26 @@ namespace ACG_Api.model.XPath
             return newPath;
         }
 
-        public void SaveXmlToDocx(string originalDocxPath, string modifiedXml, string outputDocxPath)
+        public void Save(string nameFile)
         {
-            string File = CheckFiles(outputDocxPath);
+            string updatedXml;
+            using (var stringWriter = new Utf8StringWriter())
+            using (var xmlWriter = XmlWriter.Create(stringWriter, new XmlWriterSettings
+            {
+                Indent = false,
+                Encoding = new UTF8Encoding(false)
+            }))
+            {
+                doc.Save(xmlWriter);
+                updatedXml = stringWriter.ToString();
+            }
+
+            SaveXml(_pathToTemplate, updatedXml, _filePath + nameFile + ".docx");
+        }
+
+        public void SaveXml(string originalDocxPath, string modifiedXml, string outputDocxPath)
+        {
+            string File = GenerateDocxFileName(outputDocxPath);
             using (FileStream fs = new FileStream(File, FileMode.Create))
             using (ZipArchive originalArchive = ZipFile.Open(originalDocxPath, ZipArchiveMode.Read))
             using (ZipArchive newArchive = new ZipArchive(fs, ZipArchiveMode.Create))
