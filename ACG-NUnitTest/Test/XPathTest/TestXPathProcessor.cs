@@ -8,6 +8,7 @@ namespace ACG_NUnitTest.Test.XPathTest
     {
         public string SampleDocx = "D:\\Projects\\CSharp\\Acg-Api\\ACG-NUnitTest\\Test\\XPathTest\\Docx\\sample.docx";
         public string SampleDocx2 = "D:\\Projects\\CSharp\\Acg-Api\\ACG-NUnitTest\\Test\\XPathTest\\Docx\\sample2_2.docx";
+        public string empty = "D:\\Projects\\CSharp\\Acg-Api\\ACG-NUnitTest\\Test\\XPathTest\\Docx\\empty.docx";
 
         [Fact]
         public void ExtractXml_ShouldReturnXmlContent()
@@ -22,10 +23,10 @@ namespace ACG_NUnitTest.Test.XPathTest
         [Fact]
         public void ExtractXml_ShouldThrowException_ForBrokenOrEmptyDocx()
         {
-            Action act = () => new XPathProcessor(SampleDocx);
+            Action act = () => new XPathProcessor(empty);
 
             act.Should().Throw<Exception>()
-               .WithMessage($"word file is empty or broken: {SampleDocx}");
+               .WithMessage($"word file is empty or broken: {empty}");
         }
 
         [Fact]
@@ -75,17 +76,13 @@ namespace ACG_NUnitTest.Test.XPathTest
         [Fact]
         public void WriteXmlTree_ShouldReplaceText_ForMatchingTag()
         {
-            // Arrange
             var processor = new XPathProcessor(SampleDocx);
 
-            // Act
             processor.WriteXmlTree("SomeTag", "NewValue");
 
-            // Save во временный файл
-            string tempPath = Path.Combine(Path.GetTempPath(), "updated.docx");
+            string tempPath = "D:\\Projects\\CSharp\\Acg-Api\\ACG-NUnitTest\\Test\\XPathTest\\Docx\\updated.docx";
             processor.Save("updated");
 
-            // Assert
             string xml = processor.ExtractXml(tempPath);
             xml.Should().Contain("NewValue");
         }

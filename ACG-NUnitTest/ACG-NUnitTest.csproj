@@ -39,4 +39,8 @@
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Test\XPathTest\Docx\" />
+  </ItemGroup>
+
 </Project>
