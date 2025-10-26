@@ -1,4 +1,4 @@
-﻿namespace ACG_Api.model.DTO
+﻿namespace Actum_Api.model.DTO
 {
     public class CreateGroupDto
     {

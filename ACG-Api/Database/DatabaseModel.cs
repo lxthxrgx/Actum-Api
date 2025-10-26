@@ -1,8 +1,8 @@
 ﻿// using Microsoft.EntityFrameworkCore;
 // using Microsoft.EntityFrameworkCore.Design;
-// using ACG_Api.model;
+// using Actum_Api.model;
 
-// namespace ACG_Api.Database
+// namespace Actum_Api.Database
 // {
 //     public class DatabaseModel : DbContext
 //     {

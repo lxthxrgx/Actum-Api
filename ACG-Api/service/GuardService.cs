@@ -1,8 +1,8 @@
-// using ACG_Api.Database;
+// using Actum_Api.Database;
 // using Microsoft.EntityFrameworkCore;
-// using ACG_Api.model;
+// using Actum_Api.model;
 
-// namespace ACG_Api.service{
+// namespace Actum_Api.service{
 
 //     public class GuardService
 //     {

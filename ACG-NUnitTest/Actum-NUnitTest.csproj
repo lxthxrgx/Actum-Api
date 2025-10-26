@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ACG-Api\ACG-Api.csproj" />
+    <ProjectReference Include="..\ACG-Api\Actum-Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

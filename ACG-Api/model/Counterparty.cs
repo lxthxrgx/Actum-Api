@@ -4,9 +4,9 @@
 // using System.Text;
 // using System.Text.Json.Serialization;
 // using System.Threading.Tasks;
-// using ACG_Api.model.General;
+// using Actum_Api.model.General;
 
-// namespace ACG_Api.model{
+// namespace Actum_Api.model{
 //     public class Counterparty : IDelete, ICreate
 //     {
 //         public int Id {get; set;}

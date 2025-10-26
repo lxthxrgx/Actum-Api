@@ -1,4 +1,4 @@
-﻿namespace ACG_Api.model.XPath
+﻿namespace Actum_Api.model.XPath
 {
     public interface IDocxFileNameService
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACG_Api.model.General
+namespace Actum_Api.model.General
 {
     interface IDelete
     {

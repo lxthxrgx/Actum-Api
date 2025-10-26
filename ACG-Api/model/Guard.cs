@@ -1,9 +1,9 @@
 // using System.Data;
 // using System.Text.RegularExpressions;
-// using ACG_Api.model.General;
+// using Actum_Api.model.General;
 // using Models;
 
-// namespace ACG_Api.model
+// namespace Actum_Api.model
 // {
 //     public interface IGuard
 //     {

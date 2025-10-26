@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using ACG_Api.service;
-using ACG_Api.model.XPath;
-using ACG_Api.service.AutoDocService.sublease.fop;
-using ACG_Api.service.AutoDocService.sublease.tov;
+using Actum_Api.service;
+using Actum_Api.model.XPath;
+using Actum_Api.service.AutoDocService.sublease.fop;
+using Actum_Api.service.AutoDocService.sublease.tov;
 using Microsoft.Extensions.Options;
-using ACG_Api.config;
+using Actum_Api.config;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
