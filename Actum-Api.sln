@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACG-Api", "ACG-Api\ACG-Api.csproj", "{634E4194-CDD1-49CF-B30F-DED8EEBF619C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actum-Api", "ACG-Api\Actum-Api.csproj", "{634E4194-CDD1-49CF-B30F-DED8EEBF619C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACG-NUnitTest", "ACG-NUnitTest\ACG-NUnitTest.csproj", "{D3B6A4C2-8F2B-4C1D-839B-ACF8E4D11B3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actum-NUnitTest", "ACG-NUnitTest\Actum-NUnitTest.csproj", "{D3B6A4C2-8F2B-4C1D-839B-ACF8E4D11B3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocGenAPI", "DocGenAPI\DocGenAPI.csproj", "{ED2D641B-0E42-420E-B30B-7DD5826025AB}"
 EndProject
