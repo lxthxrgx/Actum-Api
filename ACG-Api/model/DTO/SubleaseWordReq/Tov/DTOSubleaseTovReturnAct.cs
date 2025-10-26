@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ACG_Api.model.DTO.SubleaseWordReq.Tov
+namespace Actum_Api.model.DTO.SubleaseWordReq.Tov
 {
     public class DTOSubleaseTovreturnACt
     {

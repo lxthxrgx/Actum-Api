@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace ACG_Api.components.ILogger
+namespace Actum_Api.components.ILogger
 {
     public static class JsonUTF8
     {

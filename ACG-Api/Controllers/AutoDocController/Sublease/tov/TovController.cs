@@ -1,11 +1,11 @@
-using ACG_Api.model.XPath;
-using ACG_Api.model.DTO.SubleaseWordReq.Tov;
-using ACG_Api.service.AutoDocService.sublease.tov;
+using Actum_Api.model.XPath;
+using Actum_Api.model.DTO.SubleaseWordReq.Tov;
+using Actum_Api.service.AutoDocService.sublease.tov;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using ACG_Api.components.ILogger;
+using Actum_Api.components.ILogger;
 
-namespace ACG_Api.Controllers.AutoDocController.tov
+namespace Actum_Api.Controllers.AutoDocController.tov
 {
     [ApiController]
     [Route("api/sublease/[controller]")]

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ACG_Api.model.XPath;
+using Actum_Api.model.XPath;
 
-namespace ACG_Api.Controllers
+namespace Actum_Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,7 +1,7 @@
-// using ACG_Api.model.General;
-// using ACG_Api.model;
+// using Actum_Api.model.General;
+// using Actum_Api.model;
 // using System.Text.Json.Serialization;
-// namespace ACG_Api.model
+// namespace Actum_Api.model
 // {
 //     interface I2D
 //     {

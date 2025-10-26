@@ -1,9 +1,9 @@
 ﻿// using Microsoft.AspNetCore.Mvc;
-// using ACG_Api.model;
-// using ACG_Api.Database;
+// using Actum_Api.model;
+// using Actum_Api.Database;
 // using Microsoft.EntityFrameworkCore;
 
-// namespace ACG_Api.Controllers.CounterpartyController
+// namespace Actum_Api.Controllers.CounterpartyController
 // {
 //     [Route("api/[controller]")]
 //     [ApiController]

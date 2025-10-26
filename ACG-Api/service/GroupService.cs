@@ -1,6 +1,6 @@
-﻿// using ACG_Api.Database;
+﻿// using Actum_Api.Database;
 // using Microsoft.EntityFrameworkCore;
-// namespace ACG_Api.service
+// namespace Actum_Api.service
 // {
 //     public interface IGroupService
 //     {
