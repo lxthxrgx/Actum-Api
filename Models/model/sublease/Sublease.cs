@@ -10,7 +10,7 @@ namespace Models.model.sublease
     {
         public int Id { get; set; }
         public int GroupId { get; private set; }
-        public Groups GroupTable { get; private set; } = new Groups();
+        public Group Group { get; private set; } = new Group();
         public string Address { get; private set; } = "Address";
         public string ContractNumber { get; private set; } = "ContractNumber";
         public DateTime ContractSigningDate { get; private set; }

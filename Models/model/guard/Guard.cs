@@ -10,7 +10,7 @@ namespace Models.model.guard
     {
          public int Id { get; private set; }
         public int GroupId { get; private set; }
-        public Groups GroupTable { get; private set; } = new Groups();
+        public Group Group { get; private set; } = new Group();
         public string Address { get; private set; } = "Address";
         public string OhronnaComp { get; private set; } = "OhronnaComp";
         public string NumDog { get; private set; } = "NumDog";

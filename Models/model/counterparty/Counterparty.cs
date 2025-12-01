@@ -10,7 +10,7 @@ namespace Models.model.counterparty
     {
         public int Id {get; set;}
         public int GroupId { get; set; }
-        public required Groups GroupTable { get; set; }
+        public required Group Group { get; set; }
 
         public string Fullname { get; private set; } = "Fullname";
         public  string ShortName {get; private set; } = "ShortName";
