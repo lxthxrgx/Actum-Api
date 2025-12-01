@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Models.model.sublease
+namespace Models.model
 {
     public class SubleaseNotes
     {

@@ -1,33 +1,30 @@
-﻿// using Actum_Api.Database;
-// using Microsoft.EntityFrameworkCore;
-// namespace Actum_Api.service
-// {
-//     public interface IGroupService
-//     {
-        
-//     }
+﻿using Microsoft.EntityFrameworkCore;
+using Actum_Api.Database;
+using Models.model;
 
-//     public class GroupService : IGroupService
-//     {
-//         private readonly DatabaseModel _context;
+namespace Actum_Api.service
+{
+    public class GroupService
+    {
+        private readonly DatabaseModel _context;
 
-//         public GroupService(DatabaseModel context) { _context = context; }
+        public GroupService(DatabaseModel context) { _context = context; }
 
-//         public async Task<IEnumerable<Group>> GetAll()
-//         {
-//             return await _context.Groups.ToListAsync();
-//         }
+        public async Task<IEnumerable<Groups>> GetAll()
+        {
+            return await _context.Groups.ToListAsync();
+        }
 
-//         public async Task<Group> GetById(int id)
-//         {
-//             if (id == 0)
-//                 throw new Exception($"Id can't be null. Now id = {id}.");
+        public async Task<Groups> GetById(int id)
+        {
+            if (id == 0)
+                throw new Exception($"Id can't be null. Now id = {id}.");
 
-//             Group data = await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
-//             if (data == null)
-//                 throw new Exception($"data by this id is null: {id}, NumberGroup: {data.NumberGroup}");
+            Groups data = await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (data == null)
+                throw new Exception($"data by this id is null: {id}, NumberGroup: {data.NumberGroup}");
 
-//             return data;
-//         }
-//     }
-// }
+            return data;
+        }
+    }
+}

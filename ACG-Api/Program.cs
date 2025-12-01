@@ -5,6 +5,8 @@ using Actum_Api.service.AutoDocService.sublease.fop;
 using Actum_Api.service.AutoDocService.sublease.tov;
 using Microsoft.Extensions.Options;
 using Actum_Api.config;
+using Actum_Api.Database;
+using Models.model;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -18,14 +20,14 @@ builder.Services.AddSwaggerGen();
 
 //EF CORE CONNECTON
 
-// builder.Services.AddDbContext<DatabaseModel>(options =>
-// {
-//     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-//     options.EnableSensitiveDataLogging(false);
-//     options.UseLoggerFactory(LoggerFactory.Create(builder => builder
-//         .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
-//         .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
-// });
+builder.Services.AddDbContext<DatabaseModel>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.EnableSensitiveDataLogging(false);
+    options.UseLoggerFactory(LoggerFactory.Create(builder => builder
+        .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning)
+        .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)));
+});
 
 // builder.Services.AddDbContext<NewDatabaseModel>(options =>
 // {
@@ -79,6 +81,7 @@ ConfigHelper.Configuration = builder.Configuration;
 
 //Denpendency Injections
 // builder.Services.AddScoped<GuardService>();
+builder.Services.AddScoped<Groups>();
 
 builder.Services.AddTransient<Func<string, XPathProcessor>>(provider =>
 {
@@ -110,37 +113,11 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           policy.WithOrigins("http://localhost:5173","http://localhost:3000", "http://10.10.110.105:3000")
-                                .AllowAnyHeader()  // Разрешить любые заголовки
-                                .AllowAnyMethod()  // Разрешить любые методы (GET, POST, PUT, DELETE)
-                                .AllowCredentials(); // При необходимости можно разрешить отправку учетных данных (например, куки)
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials();
                       });
 });
-
-// CERTIFICATE HTTPS & HTTP SETTINGS
-// var certificatePath = builder.Configuration["CertificatePath"];
-// var certificatePassword = builder.Configuration["CertificatePassword"];
-// var cert = new X509Certificate2(certificatePath, certificatePassword, X509KeyStorageFlags.MachineKeySet);
-
-// var httpsIP = string.IsNullOrWhiteSpace(builder.Configuration["HttpsIP"])
-//     ? IPAddress.Parse("0.0.0.0")
-//     : IPAddress.Parse(builder.Configuration["HttpsIP"]);
-
-// var staticIP = string.IsNullOrWhiteSpace(builder.Configuration["StaticIP"])
-//     ? IPAddress.Parse("0.0.0.0")
-//     : IPAddress.Parse(builder.Configuration["StaticIP"]);
-
-// var staticPortHttps = int.Parse(builder.Configuration["StaticPortHttps"] ?? "5001");
-// var staticPortHttp = int.Parse(builder.Configuration["StaticPortHttp"] ?? "8080");
-
-// builder.WebHost.ConfigureKestrel(options =>
-// {
-//     options.Listen(httpsIP, staticPortHttps, listenOptions =>
-//     {
-//         listenOptions.UseHttps(cert);
-//     });
-
-//     options.Listen(staticIP, staticPortHttp);
-// });
 
 string staticFilesPath = builder.Configuration["StaticFilesPath"] ?? "u'r file path";
 

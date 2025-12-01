@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Models.model.groups;
 
-namespace Models.model.guard
+namespace Models.model
 {
     public class Guard
     {
