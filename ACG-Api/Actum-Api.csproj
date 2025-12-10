@@ -10,6 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Groups\**" />
+    <Content Remove="Controllers\Groups\**" />
+    <EmbeddedResource Remove="Controllers\Groups\**" />
+    <None Remove="Controllers\Groups\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
@@ -26,7 +34,6 @@
   <ItemGroup>
     <Folder Include="Controllers\AutoDocController\Rent\fop\" />
     <Folder Include="Controllers\AutoDocController\Rent\tov\" />
-    <Folder Include="Controllers\Groups\" />
   </ItemGroup>
 
   <ItemGroup>

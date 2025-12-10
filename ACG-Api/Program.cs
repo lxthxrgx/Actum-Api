@@ -82,6 +82,7 @@ ConfigHelper.Configuration = builder.Configuration;
 //Denpendency Injections
 // builder.Services.AddScoped<GuardService>();
 builder.Services.AddScoped<Groups>();
+builder.Services.AddScoped<GroupService>();
 
 builder.Services.AddTransient<Func<string, XPathProcessor>>(provider =>
 {

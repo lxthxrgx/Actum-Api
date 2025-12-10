@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Models.model;
 using Actum_Api.Database;
 using Microsoft.EntityFrameworkCore;
+using Actum_Api.service;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Actum_Api.Controllers.ControllerGroup
 {
@@ -10,15 +12,17 @@ namespace Actum_Api.Controllers.ControllerGroup
     public class groupController : ControllerBase
     {
         private readonly DatabaseModel _newcontext;
-        public groupController(DatabaseModel newcontext)
+        private readonly GroupService _groupService;
+        public groupController(DatabaseModel newcontext, GroupService groupService)
         {
             _newcontext = newcontext;
+            _groupService = groupService;
         }
 
-        [HttpGet("GETcontollerGroup")]
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _newcontext.Groups.ToListAsync());
+            return Ok(await _groupService.Get());
         }
 
         [HttpGet("{id}")]
@@ -35,19 +39,30 @@ namespace Actum_Api.Controllers.ControllerGroup
                 return StatusCode(400, new { error = "not found data by this Id" });
         }
 
+        public class GroupPostDto
+        {
+            public int NumberGroup { get; set; }
+            public string NameGroup { get; set; }
+            public string Address { get; set; }
+            public double Area { get; set; }
+            public bool IsAlert { get; set; }
+        }
+
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] List<Groups> data)
+        public async Task<IActionResult> Post([FromBody] GroupPostDto data)
         {
             if (data == null)
                 return StatusCode(400, new { error = "data cant be null" });
-            foreach (var value in data)
-            {
-                await _newcontext.AddAsync(value);
-            }
+            await _groupService.Create(data);
             await _newcontext.SaveChangesAsync();
             return Ok();
         }
 
+        [HttpGet("number-groups")]
+        public async Task<IActionResult> GetNumbers()
+        {
+            return Ok(await _groupService.GetNumberGroups());
+        }
         //[HttpPut("{id}")]
         //public async Task<IActionResult> Put(int id, [FromBody] Groups value)
         //{
